@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พินัยกรรมเข้าใจง่าย (EasyWill TH) — คู่มือพินัยกรรม มรดก และสินทรัพย์ดิจิทัล</title>
+    <!-- นำเข้า Tailwind CSS สำหรับการจัดวาง Layout และ Responsive Design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- นำเข้าฟอนต์ภาษาไทย Prompt และ Sarabun จาก Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Sarabun', 'sans-serif'],
+                        heading: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#1e3a5f',
+                            900: '#102542',
+                            950: '#091628',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#d97706',
+                            600: '#b45309',
+                        },
+                        cream: {
+                            50: '#fdfbf7',
+                            100: '#f8f5ee',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #fdfbf7;
+            color: #1e293b;
+            font-size: 16px;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Prompt', sans-serif;
+        }
+        /* แอนิเมชันสำหรับการเปลี่ยนหน้า */
+        .page-fade {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* ปรับแต่ง Scrollbar ให้ดูสบายตา */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f5ee;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-cream-50 text-slate-800 selection:bg-amber-400 selection:text-navy-950">
+
+    <!-- แถบนำทางหลัก (Sticky Top Navigation Bar) -->
+    <header class="sticky top-0 z-50 bg-navy-900/95 backdrop-blur-md text-white shadow-lg border-b border-navy-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-18">
+                <!-- โลโก้และชื่อเว็บไซต์ -->
+                <a href="#/home" class="flex items-center space-x-3 group focus:outline-none">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-300 via-amber-400 to-amber-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                        <svg class="w-6 h-6 text-navy-950" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="font-heading font-bold text-lg sm:text-xl tracking-tight text-white block leading-none">
+                            พินัยกรรมเข้าใจง่าย <span class="text-amber-400">(EasyWill TH)</span>
+                        </span>
+                        <span class="text-[11px] sm:text-xs text-slate-300 hidden sm:block mt-0.5">คู่มือพินัยกรรม มรดก สิทธิทายาท และสินทรัพย์ดิจิทัล</span>
+                    </div>
+                </a>
+
+                <!-- เมนูสำหรับหน้าจอคอมพิวเตอร์ (Desktop Navigation) -->
+                <nav id="desktop-nav" class="hidden lg:flex items-center space-x-1" aria-label="เมนูหลัก">
+                    <!-- รายการเมนูจะถูกสร้างด้วย JavaScript -->
+                </nav>
+
+                <!-- ปุ่มเปิดเมนูสำหรับมือถือ (Mobile Menu Button) -->
+                <div class="flex items-center lg:hidden">
+                    <button id="mobile-menu-btn" type="button" class="p-2.5 rounded-xl text-slate-200 hover:text-white hover:bg-navy-800 focus:outline-none focus:ring-2 focus:ring-amber-400 transition" aria-expanded="false" aria-label="เปิดเมนูนำทาง">
+                        <svg id="menu-icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- เมนูแบบเลื่อนลงสำหรับมือถือ (Mobile Dropdown Menu) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-navy-900 border-t border-navy-800 px-4 pt-2 pb-4 space-y-1 shadow-2xl">
+            <!-- รายการเมนูมือถือจะถูกสร้างด้วย JavaScript -->
+        </div>
+    </header>
+
+    <!-- แถบแสดงความคืบหน้าการเรียนรู้ (Learning Progress Bar) -->
+    <div class="w-full bg-amber-100/80 border-b border-amber-200/60 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between text-xs text-navy-900">
+            <span id="progress-label" class="font-heading font-medium">ความคืบหน้าการเรียนรู้: บทที่ 1 จาก 7</span>
+            <span id="progress-percent" class="font-heading font-bold text-amber-700">14%</span>
+        </div>
+        <div class="w-full h-1.5 bg-slate-200">
+            <div id="route-progress" class="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-navy-800 transition-all duration-300" style="width: 14.28%;"></div>
+        </div>
+    </div>
+
+    <!-- พื้นที่แสดงเนื้อหาหลักของแต่ละหน้า (Dynamic Page Container) -->
+    <main id="app-content" class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <!-- เนื้อหาของแต่ละ Route จะถูก Render ที่นี่ -->
+    </main>
+
+    <!-- แถบปุ่มเปลี่ยนหน้าก่อนหน้า / ถัดไป (Bottom Pagination Navigation) -->
+    <div class="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+        <div id="page-pagination" class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-amber-200/70">
+            <!-- ปุ่มนำทางซ้าย-ขวาจะถูกสร้างด้วย JavaScript -->
+        </div>
+    </div>
+
+    <!-- ส่วนท้ายเว็บไซต์ (Footer) -->
+    <footer class="bg-navy-950 text-slate-300 border-t border-navy-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <div>
+                    <div class="flex items-center justify-center md:justify-start space-x-2 mb-1">
+                        <span class="font-heading font-bold text-white text-lg">พินัยกรรมเข้าใจง่าย <span class="text-amber-400">(EasyWill TH)</span></span>
+                        <span class="px-2.5 py-0.5 text-xs rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">สื่อการเรียนรู้ดิจิทัล</span>
+                    </div>
+                    <p class="text-sm text-slate-400">รายวิชา กฎหมาย จริยธรรมและการจัดการความปลอดภัยของข้อมูลทางดิจิทัล</p>
+                </div>
+                <div class="text-xs sm:text-sm text-slate-400 space-y-1">
+                    <p>ประเด็น: พินัยกรรม มรดก สิทธิของทายาท และความท้าทายของสินทรัพย์ดิจิทัล</p>
+                    <p id="footer-author-display" class="text-amber-400 font-medium">จัดทำโดย: ณรงค์ฤทธิชัย รอดรัศมี และ นัทธวัฒน์ คำบรรเทิง</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- กล่องข้อความแจ้งเตือนแบบกำหนดเอง (Custom Toast Notification แทนการใช้ alert) -->
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-navy-900 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-amber-400/50 flex items-center space-x-3 max-w-sm">
+            <div class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <p id="toast-message" class="text-sm font-medium">บันทึกข้อมูลเรียบร้อยแล้ว</p>
+        </div>
+    </div>
+
+    <!-- สคริปต์ควบคุมการทำงานของระบบ SPA Routing, Interactive Components และ Quiz -->
+    <script>
+        /**
+         * โครงสร้างข้อมูลเส้นทาง (Routes Configuration) ทั้ง 7 หน้าบังคับ
+         */
+        const ROUTES = [
+            { path: '#/home', id: 'home', label: 'หน้าแรก', shortLabel: 'หน้าแรก' },
+            { path: '#/law', id: 'law', label: 'กฎหมายดิจิทัล', shortLabel: 'กฎหมาย' },
+            { path: '#/ethics', id: 'ethics', label: 'จริยธรรมดิจิทัล', shortLabel: 'จริยธรรม' },
+            { path: '#/security', id: 'security', label: 'ความปลอดภัยดิจิทัล', shortLabel: 'ความปลอดภัย' },
+            { path: '#/casestudy', id: 'casestudy', label: 'กรณีศึกษา', shortLabel: 'กรณีศึกษา' },
+            { path: '#/quiz', id: 'quiz', label: 'แบบทดสอบ', shortLabel: 'แบบทดสอบ' },
+            { path: '#/about', id: 'about', label: 'แหล่งอ้างอิงและผู้จัดทำ', shortLabel: 'อ้างอิง/ผู้จัดทำ' }
+        ];
+
+        /**
+         * สถานะของแอปพลิเคชัน (Application State)
+         */
+        const appState = {
+            ethicsIssue1Tab: 'optionA', // 'optionA' | 'optionB' | 'recommend'
+            ethicsIssue2Tab: 'optionA', // 'optionA' | 'optionB' | 'recommend'
+            caseDecision: null,         // null | 'ignore' | 'cooperate'
+            quizAnswers: {},            // เก็บคำตอบของผู้ใช้ { questionIndex: optionIndex }
+            quizSubmitted: false,       // สถานะการส่งคำตอบแบบทดสอบ
+            authorInfo: {
+                author1: 'ณรงค์ฤทธิชัย รอดรัศมี',
+                author2: 'นัทธวัฒน์ คำบรรเทิง',
+                dueDate: '20 พฤศจิกายน 2569',
+                courseName: 'กฎหมาย จริยธรรมและการจัดการความปลอดภัยของข้อมูลทางดิจิทัล'
+            }
+        };
+
+        // โหลดข้อมูลวันที่กำหนดส่งจาก LocalStorage หากเคยบันทึกไว้
+        try {
+            const savedAuthor = localStorage.getItem('easywill_author_info');
+            if (savedAuthor) {
+                const parsed = JSON.parse(savedAuthor);
+                if (parsed.dueDate) appState.authorInfo.dueDate = parsed.dueDate;
+            }
+        } catch (e) {
+            console.warn('ไม่สามารถอ่านข้อมูลจาก LocalStorage ได้:', e);
+        }
+
+        /**
+         * ฟังก์ชันแสดงข้อความแจ้งเตือน (Toast Notification) แทนการใช้ alert()
+         */
+        function showToast(message) {
+            const toastBox = document.getElementById('toast-box');
+            const toastMsg = document.getElementById('toast-message');
+            if (!toastBox || !toastMsg) return;
+
+            toastMsg.textContent = message;
+            toastBox.classList.remove('translate-y-20', 'opacity-0');
+            toastBox.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toastBox.classList.remove('translate-y-0', 'opacity-100');
+                toastBox.classList.add('translate-y-20', 'opacity-0');
+            }, 3200);
+        }
+
+        /**
+         * ข้อมูลชุดคำถามแบบทดสอบ 8 ข้อ (ครอบคลุม 3 มิติ และมีคำถามสถานการณ์ 3 ข้อ)
+         */
+        const QUIZ_QUESTIONS = [
+            {
+                id: 1,
+                category: 'มิติด้านกฎหมาย (ป.พ.พ. บรรพ 6)',
+                isScenario: false,
+                question: 'หากบุคคลหนึ่งเสียชีวิตโดย "ไม่ได้ทำพินัยกรรมไว้" ทรัพย์มรดกจะตกทอดแก่ทายาทโดยธรรมตามลำดับชั้นในมาตรา 1629 แห่งประมวลกฎหมายแพ่งและพาณิชย์ บุคคลใดจัดอยู่ใน "ลำดับที่ 1" (และมีสิทธิรับมรดกก่อนลำดับอื่น)?',
+                options: [
+                    'บิดามารดาของผู้ตาย',
+                    'ผู้สืบสันดาน (บุตร หลาน เหลน ลื่อ) ร่วมกับคู่สมรสที่จดทะเบียนถูกต้องตามกฎหมาย',
+                    'พี่น้องร่วมบิดามารดาเดียวกันของผู้ตาย',
+                    'ลุง ป้า น้า อา ของผู้ตาย'
+                ],
+                correctIndex: 1,
+                explanation: 'ถูกต้อง! ตาม ป.พ.พ. มาตรา 1629 ทายาทโดยธรรมลำดับที่ 1 คือ "ผู้สืบสันดาน" (บุตร) และตามมาตรา 1635 คู่สมรสที่จดทะเบียนสมรสถูกต้องตามกฎหมายมีสิทธิรับมรดกเสมือนเป็นทายาทชั้นบุตร (หากมีทายาทลำดับที่ 1 หรือ 2 มรดกจะไม่ตกไปยังลำดับที่ 3-6 ยกเว้นบิดามารดาตามมาตรา 1630 วรรคสองที่รับร่วมกับบุตรได้)'
+            },
+            {
+                id: 2,
+                category: 'มิติด้านกฎหมาย (พ.ร.บ. ธุรกรรมทางอิเล็กทรอนิกส์)',
+                isScenario: false,
+                question: 'เหตุใดการพิมพ์ข้อความพินัยกรรมลงในไฟล์ Word/PDF แล้วใส่ลายเซ็นอิเล็กทรอนิกส์ (E-Signature) เก็บไว้ในคอมพิวเตอร์โดยไม่ได้พิมพ์ออกมาลงนามต่อหน้าพยาน จึง "ยังไม่มีผลสมบูรณ์เป็นพินัยกรรมตามกฎหมายไทย"?',
+                options: [
+                    'เพราะคอมพิวเตอร์ไม่สามารถเก็บไฟล์ได้นานเกิน 10 ปี',
+                    'เพราะ พ.ร.บ. ว่าด้วยธุรกรรมทางอิเล็กทรอนิกส์ พ.ศ. 2544 มาตรา 3 กำหนดข้อยกเว้นไม่ให้นำกฎหมายธุรกรรมอิเล็กทรอนิกส์มาใช้บังคับกับเรื่องครอบครัวและมรดก',
+                    'เพราะพินัยกรรมต้องเขียนด้วยลายมือเท่านั้น ห้ามพิมพ์ด้วยเครื่องพิมพ์ทุกกรณี',
+                    'เพราะลายเซ็นอิเล็กทรอนิกส์ใช้ได้เฉพาะกับหน่วยงานราชการเท่านั้น'
+                ],
+                correctIndex: 1,
+                explanation: 'ถูกต้อง! ตามมาตรา 3 แห่ง พ.ร.บ. ว่าด้วยธุรกรรมทางอิเล็กทรอนิกส์ฯ มีข้อยกเว้นไม่ใช้บังคับกับธุรกรรมเกี่ยวกับครอบครัวและมรดก ดังนั้นการทำพินัยกรรมจึงต้องทำตามแบบใน ป.พ.พ. มาตรา 1656-1660 (เช่น พิมพ์แล้วปรินต์ลงนามจริงต่อหน้าพยานอย่างน้อย 2 คนพร้อมกัน หรือเขียนด้วยลายมือตนเองทั้งฉบับและลงวันที่กับลายมือชื่อ)'
+            },
+            {
+                id: 3,
+                category: 'มิติด้านจริยธรรมดิจิทัล',
+                isScenario: false,
+                question: 'ประเด็น "ความเป็นส่วนตัวดิจิทัลหลังความตาย (Digital Privacy After Death)" สะท้อนถึงความขัดแย้งเชิงจริยธรรมในเรื่องใดมากที่สุด?',
+                options: [
+                    'ความขัดแย้งระหว่างความเร็วอินเทอร์เน็ตของทายาทกับเซิร์ฟเวอร์ของธนาคาร',
+                    'ความขัดแย้งระหว่าง "สิทธิความเป็นส่วนตัวในข้อมูลส่วนบุคคลของผู้เสียชีวิต (เช่น แชทส่วนตัว)" กับ "สิทธิการรับรู้และจัดการทรัพย์สินมรดกของทายาท"',
+                    'ความขัดแย้งระหว่างราคาค่าธรรมเนียมศาลกับค่าทนายความ',
+                    'ความขัดแย้งระหว่างการใช้สมาร์ทโฟนระบบ iOS และ Android'
+                ],
+                correctIndex: 1,
+                explanation: 'ถูกต้อง! ในเชิงจริยธรรมดิจิทัล แม้เจ้าของบัญชีจะเสียชีวิตไปแล้ว แต่ในบัญชีอีเมลหรือโซเชียลมีเดียอาจมีข้อมูลความลับส่วนตัวหรือความลับของบุคคลอื่นปะปนอยู่ ทายาทจึงควรเข้าถึงเฉพาะส่วนที่จำเป็นต่อการจัดการทรัพย์สินมรดก และเคารพความเป็นส่วนตัวในเรื่องที่ไม่เกี่ยวข้อง'
+            },
+            {
+                id: 4,
+                category: 'มิติด้านความปลอดภัยดิจิทัล',
+                isScenario: false,
+                question: 'หากเจ้ามรดกมีสินทรัพย์ดิจิทัลในกระเป๋าเงินคริปโทเคอร์เรนซีแบบส่วนตัว (Self-Custody / Hardware Wallet) แต่ไม่เคยจดบันทึก "Seed Phrase (วลีกู้คืน 12-24 คำ)" หรือวางแผนส่งมอบไว้เลย จะเกิดผลอย่างไรเมื่อเจ้ามรดกเสียชีวิต?',
+                options: [
+                    'ทายาทสามารถนำใบมรณบัตรไปยื่นให้ธนาคารแห่งประเทศไทยกู้คืนรหัสผ่านให้ได้ทันที',
+                    'ระบบบล็อกเชนจะโอนเหรียญทั้งหมดเข้าบัญชีของทายาทโดยอัตโนมัติภายใน 30 วัน',
+                    'สินทรัพย์ดิจิทัลเหล่านั้นจะสูญหายและถูกล็อกตลอดกาล ไม่มีหน่วยงานใดสามารถกู้คืนรหัสผ่านให้ได้',
+                    'ศาลสามารถสั่งให้แฮกเกอร์เจาะระบบบล็อกเชนเพื่อนำเงินออกมาแบ่งทายาทได้'
+                ],
+                correctIndex: 2,
+                explanation: 'ถูกต้อง! กระเป๋าเงินดิจิทัลแบบไร้ตัวกลาง (Self-Custody) ไม่มีระบบ "ลืมรหัสผ่าน" หากไม่มี Seed Phrase หรือ Private Key ก็ไม่มีใครในโลกสามารถเข้าถึงสินทรัพย์นั้นได้ จึงจำเป็นต้องจัดทำบัญชีสินทรัพย์ดิจิทัลและระบบส่งมอบกุญแจสำรองที่ปลอดภัย'
+            },
+            {
+                id: 5,
+                category: 'มิติด้านความปลอดภัยดิจิทัล',
+                isScenario: false,
+                question: 'ข้อใดคือแนวทางป้องกัน "การปลอมแปลงหรือแอบแก้ไขไฟล์พินัยกรรมดิจิทัล" ก่อนนำไปจัดพิมพ์เป็นเอกสารฉบับจริงได้อย่างมีประสิทธิภาพสูงสุด?',
+                options: [
+                    'ส่งไฟล์ร่างพินัยกรรมลงในกลุ่มไลน์ครอบครัวทุกคนเพื่อช่วยกันตรวจทาน',
+                    'เข้ารหัสไฟล์ (Encryption) ตั้งรหัสผ่านแข็งแรง บันทึกค่า Hash/Timestamp เพื่อยืนยันความถูกต้อง และพิมพ์ฉบับจริงลงนามต่อหน้าพยานเพื่อเก็บในที่ปลอดภัย',
+                    'ตั้งชื่อไฟล์ว่า "ห้ามแก้ไขเด็ดขาด.docx" แล้วเก็บไว้หน้า Desktop',
+                    'อัปโหลดไฟล์พินัยกรรมขึ้น Google Drive แบบเปิดสาธารณะเพื่อให้ทนายเปิดดูง่าย'
+                ],
+                correctIndex: 1,
+                explanation: 'ถูกต้อง! การเข้ารหัสไฟล์ช่วยป้องกันการเปิดอ่าน/แก้ไขโดยไม่ได้รับอนุญาต การใช้ค่า Hash หรือ Timestamp ช่วยพิสูจน์ได้ว่าเอกสารไม่ถูกดัดแปลง และการลงนามในเอกสารกระดาษจริงต่อหน้าพยานตามกฎหมายจะทำให้พินัยกรรมมีผลบังคับใช้สมบูรณ์'
+            },
+            {
+                id: 6,
+                category: 'คำถามสถานการณ์จำลอง (ข้อที่ 1/3)',
+                isScenario: true,
+                question: '[สถานการณ์] ก่อนเสียชีวิตด้วยโรคชรา คุณตาได้อัดคลิปวิดีโอด้วยโทรศัพท์มือถือพูดสั่งเสียชัดเจนว่า "ขอยกที่ดินแปลงนี้ให้หลานชายคนโตเพียงผู้เดียว" โดยขณะอัดคลิปคุณตานอนพักรักษาตัวอยู่ที่บ้านตามปกติ ไม่ได้อยู่ในภาวะฉุกเฉินใกล้เสียชีวิตกะทันหัน คลิปวิดีโอนี้มีผลเป็นพินัยกรรมตามกฎหมายหรือไม่?',
+                options: [
+                    'มีผลสมบูรณ์ทันที เพราะเห็นหน้าและได้ยินเสียงของคุณตาชัดเจน',
+                    'ไม่มีผลเป็นพินัยกรรมตามกฎหมาย เพราะการทำพินัยกรรมด้วยวาจาทำได้เฉพาะ "พฤติการณ์พิเศษ" (เช่น ตกอยู่ในอันตรายใกล้ความตาย) ต่อหน้าพยานอย่างน้อย 2 คนพร้อมกันเท่านั้น',
+                    'มีผลสมบูรณ์หากหลานชายนำคลิปไปโพสต์ลงโซเชียลมีเดียภายใน 7 วัน',
+                    'มีผลสมบูรณ์ครึ่งหนึ่ง อีกครึ่งหนึ่งต้องแบ่งให้ทายาทคนอื่น'
+                ],
+                correctIndex: 1,
+                explanation: 'ถูกต้อง! ตาม ป.พ.พ. มาตรา 1663 พินัยกรรมทำด้วยวาจาจะทำได้เฉพาะเมื่อมีพฤติการณ์พิเศษที่บุคคลไม่สามารถทำพินัยกรรมตามแบบอื่นได้ (เช่น ตกอยู่ในอันตรายใกล้ความตาย หรือเวลามีโรคระบาด/สงคราม) และต้องแสดงเจตนาต่อหน้าพยานอย่างน้อย 2 คนพร้อมกัน จากนั้นพยานต้องรีบไปแจ้งต่อนายอำเภอโดยเร็ว การอัดคลิปคนเดียวในมือถือจึงไม่เป็นพินัยกรรมตามกฎหมาย'
+            },
+            {
+                id: 7,
+                category: 'คำถามสถานการณ์จำลอง (ข้อที่ 2/3)',
+                isScenario: true,
+                question: '[สถานการณ์] นายเอกได้รับโทรศัพท์จากบุคคลที่อ้างตัวว่าเป็น "เจ้าหน้าที่ศูนย์บริการพินัยกรรมออนไลน์แห่งชาติ" แจ้งว่ามีชื่อนายเอกเป็นผู้รับมรดก 5 ล้านบาท แต่ต้องคลิกลิงก์เพื่อกรอกเลขบัตรประชาชน 13 หลัก รหัสผ่านแอปธนาคาร และรหัส OTP เพื่อยืนยันสิทธิ์รับมรดก นายเอกควรปฏิบัติอย่างไร?',
+                options: [
+                    'รีบกรอกข้อมูลทันทีเพราะกลัวเสียสิทธิ์รับมรดก 5 ล้านบาท',
+                    'วางสายทันที ไม่คลิกลิงก์และไม่ให้ข้อมูลส่วนตัว เพราะเป็นกลลวงฟิชชิ่ง (Phishing) ของมิจฉาชีพ หน่วยงานรัฐหรือศาลไม่มีนโยบายโทรขอรหัสผ่านหรือ OTP เพื่อโอนมรดก',
+                    'ขอเลขบัญชีของเจ้าหน้าที่แล้วโอนค่าธรรมเนียมไปให้ก่อน',
+                    'ส่งรูปถ่ายบัตรประชาชนไปให้เจ้าหน้าที่ทางแชทเพื่อยืนยันตัวตน'
+                ],
+                correctIndex: 1,
+                explanation: 'ถูกต้อง! นี่คือภัยคุกคามทางไซเบอร์รูปแบบ Phishing / Social Engineering ที่อาศัยเรื่องมรดกมาล่อลวง การจัดการมรดกตามกฎหมายต้องดำเนินการผ่านกระบวนการศาล ทนายความ หรือสถาบันการเงินด้วยเอกสารตัวจริง ไม่มีการโทรขอรหัสผ่านหรือ OTP ทางโทรศัพท์เด็ดขาด'
+            },
+            {
+                id: 8,
+                category: 'คำถามสถานการณ์จำลอง (ข้อที่ 3/3)',
+                isScenario: true,
+                question: '[สถานการณ์] หลังคุณพ่อเสียชีวิต ลูกชายคนกลางพบสมุดจดรหัสผ่านบัญชีคริปโทเคอร์เรนซีของคุณพ่อมูลค่า 2 ล้านบาทอยู่ในลิ้นชัก แต่ในพินัยกรรมฉบับกระดาษไม่ได้ระบุเรื่องบัญชีคริปโทฯ ไว้ ลูกชายคนกลางจึงแอบโอนเหรียญทั้งหมดเข้ากระเป๋าส่วนตัวโดยไม่บอกพี่น้องคนอื่น การกระทำนี้ผิดหลักการใด?',
+                options: [
+                    'ไม่ผิดอะไรเลย เพราะใครเจอรหัสผ่านก่อนย่อมเป็นเจ้าของสินทรัพย์ดิจิทัลนั้น',
+                    'ผิดทั้งหลักกฎหมาย (ทรัพย์สินที่ไม่ได้ระบุในพินัยกรรมต้องนำมาแบ่งปันแก่ทายาทโดยธรรมทุกคน การยักยอกปิดบังอาจถูกกำจัดมิให้รับมรดกตาม ป.พ.พ. มาตรา 1605) และผิดหลักจริยธรรมด้านความซื่อสัตย์และเป็นธรรม',
+                    'ผิดเฉพาะกฎระเบียบของเว็บไซต์เทรดคริปโทฯ เท่านั้น ไม่เกี่ยวกับกฎหมายมรดก',
+                    'ถูกต้องตามหลักความปลอดภัยไซเบอร์ เพราะเป็นการย้ายเงินไปเก็บในที่ปลอดภัย'
+                ],
+                correctIndex: 1,
+                explanation: 'ถูกต้อง! สินทรัพย์ดิจิทัลที่มีมูลค่าถือเป็น "ทรัพย์มรดก" อย่างหนึ่ง เมื่อไม่ได้ระบุยกให้ใครในพินัยกรรม ย่อมต้องตกเป็นกองมรดกแบ่งแก่ทายาทโดยธรรมตามกฎหมาย นอกจากนี้ ป.พ.พ. มาตรา 1605 บัญญัติว่าทายาทที่ยักย้ายหรือปิดบังทรัพย์มรดกเท่าส่วนที่ตนจะได้หรือมากกว่านั้น ต้องถูกกำจัดมิให้รับมรดกเลย!'
+            }
+        ];
+
+        /**
+         * =========================================================================
+         * ส่วนการเรนเดอร์เนื้อหาแต่ละหน้า (Page Templates)
+         * =========================================================================
+         */
+
+        // 1. หน้าแรก (#/home)
+        function renderHomePage() {
+            return `
+            <div class="page-fade space-y-10">
+                <!-- Hero Banner -->
+                <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 text-white p-8 sm:p-12 shadow-xl border border-navy-800">
+                    <div class="absolute -right-24 -top-24 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -left-24 -bottom-24 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="relative z-10 grid lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-5">
+                            <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-medium">
+                                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                                <span>ประเด็นหลัก: พินัยกรรม มรดก สิทธิทายาท และสินทรัพย์ดิจิทัล</span>
+                            </div>
+                            
+                            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight">
+                                พินัยกรรมเข้าใจง่าย <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200">(EasyWill TH)</span>
+                            </h1>
+                            
+                            <p class="text-slate-200 text-base sm:text-lg leading-relaxed">
+                                วางแผนส่งต่อความรักและความมั่นคงให้คนข้างหลังอย่างถูกต้อง ลดความขัดแย้งในครอบครัว เรียนรู้หลักกฎหมายมรดก สิทธิของทายาท ข้อจำกัดของพินัยกรรมอิเล็กทรอนิกส์ และวิธีเก็บรักษาเอกสารและสินทรัพย์ดิจิทัลอย่างปลอดภัย
+                            </p>
+
+                            <div class="flex flex-wrap gap-3 pt-2">
+                                <a href="#/law" class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-navy-950 font-heading font-bold shadow-lg shadow-amber-500/25 transition-all transform hover:-translate-y-0.5">
+                                    <span>เข้าสู่บทเรียน: กฎหมายดิจิทัล</span>
+                                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </a>
+                                <a href="#/casestudy" class="inline-flex items-center justify-center px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-heading font-medium border border-white/20 transition">
+                                    <span>เข้าสู่กรณีศึกษาจำลอง</span>
+                                </a>
+                                <a href="#/quiz" class="inline-flex items-center justify-center px-5 py-3.5 rounded-xl bg-navy-800/90 hover:bg-navy-800 text-amber-300 font-heading font-medium border border-amber-400/30 transition">
+                                    <span>ทำแบบทดสอบ (8 ข้อ)</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- ภาพประกอบเวกเตอร์สรุปภาพรวม (SVG Illustration Card) -->
+                        <div class="lg:col-span-5 flex justify-center">
+                            <div class="w-full max-w-sm bg-navy-900/90 backdrop-blur-sm border border-amber-400/30 rounded-2xl p-6 shadow-2xl space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-700/80 pb-3">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-3 h-3 rounded-full bg-rose-400"></div>
+                                        <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+                                        <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                                    </div>
+                                    <span class="text-xs text-amber-300 font-mono">EasyWill Framework</span>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="p-3.5 rounded-xl bg-navy-950/90 border border-slate-700/80 flex items-center justify-between">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-slate-400">มิติกฎหมายมรดกและดิจิทัล</p>
+                                                <p class="text-sm font-semibold text-white">แบบพินัยกรรม & ลำดับทายาท</p>
+                                            </div>
+                                        </div>
+                                        <span class="px-2 py-0.5 text-[11px] rounded bg-amber-500/20 text-amber-300">ป.พ.พ.</span>
+                                    </div>
+
+                                    <div class="p-3.5 rounded-xl bg-navy-950/90 border border-slate-700/80 flex items-center justify-between">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-slate-400">มิติจริยธรรมดิจิทัล</p>
+                                                <p class="text-sm font-semibold text-white">ความเป็นส่วนตัวหลังความตาย</p>
+                                            </div>
+                                        </div>
+                                        <span class="px-2 py-0.5 text-[11px] rounded bg-emerald-500/20 text-emerald-300">Ethics</span>
+                                    </div>
+
+                                    <div class="p-3.5 rounded-xl bg-navy-950/90 border border-slate-700/80 flex items-center justify-between">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="p-2 rounded-lg bg-sky-500/20 text-sky-400">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-slate-400">มิติความปลอดภัยข้อมูล</p>
+                                                <p class="text-sm font-semibold text-white">ปกป้องเอกสาร & Crypto Wallet</p>
+                                            </div>
+                                        </div>
+                                        <span class="px-2 py-0.5 text-[11px] rounded bg-sky-500/20 text-sky-300">Security</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- กลุ่มเป้าหมาย (Target Audience) -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-200/70">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-navy-900">กลุ่มเป้าหมายของเว็บแอปพลิเคชัน EasyWill TH</h2>
+                            <p class="text-sm sm:text-base text-slate-600">ออกแบบเนื้อหาให้ตัวอักษรใหญ่ อ่านง่าย สบายตา เหมาะสำหรับทุกช่วงวัยในครอบครัว</p>
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="p-5 rounded-2xl bg-cream-100/70 border border-amber-200/80 space-y-2">
+                            <span class="inline-block px-3 py-1 rounded-lg bg-navy-900 text-amber-300 text-xs font-heading font-semibold">กลุ่มที่ 1</span>
+                            <h3 class="text-base font-bold text-navy-900">ผู้สูงอายุและหัวหน้าครอบครัว</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                ผู้ที่ต้องการวางแผนจัดสรรทรัพย์สิน บ้าน ที่ดิน และเงินออมให้ลูกหลานอย่างเป็นธรรมและมีผลสมบูรณ์ตามกฎหมาย
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-cream-100/70 border border-amber-200/80 space-y-2">
+                            <span class="inline-block px-3 py-1 rounded-lg bg-amber-600 text-white text-xs font-heading font-semibold">กลุ่มที่ 2</span>
+                            <h3 class="text-base font-bold text-navy-900">คนรุ่นใหม่และนักลงทุนดิจิทัล</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                ผู้ที่มีสินทรัพย์ดิจิทัล บัญชีคริปโทฯ หุ้นออนไลน์ หรือบัญชีโซเชียลมีเดียที่สร้างรายได้ และต้องการส่งต่อรหัสผ่านอย่างปลอดภัย
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-cream-100/70 border border-amber-200/80 space-y-2">
+                            <span class="inline-block px-3 py-1 rounded-lg bg-navy-800 text-white text-xs font-heading font-semibold">กลุ่มที่ 3</span>
+                            <h3 class="text-base font-bold text-navy-900">ทายาทและผู้จัดการมรดก</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                สมาชิกในครอบครัวที่ต้องการเข้าใจสิทธิและหน้าที่ของทายาทโดยธรรม ลำดับการรับมรดก และขั้นตอนการขอจัดการมรดกอย่างถูกต้อง
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-cream-100/70 border border-amber-200/80 space-y-2">
+                            <span class="inline-block px-3 py-1 rounded-lg bg-emerald-700 text-white text-xs font-heading font-semibold">กลุ่มที่ 4</span>
+                            <h3 class="text-base font-bold text-navy-900">บุคคลทั่วไปและผู้สนใจกฎหมาย</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                ประชาชนทั่วไปที่ต้องการรู้เท่าทันกลลวงมิจฉาชีพออนไลน์ที่แอบอ้างเรื่องมรดกและพินัยกรรมปลอม
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ผู้อ่านจะนำความรู้ไปใช้อย่างไร -->
+                <section class="space-y-6">
+                    <div class="text-center max-w-2xl mx-auto">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-navy-900">ผู้อ่านจะนำความรู้จากเว็บนี้ไปใช้อย่างไร?</h2>
+                        <p class="text-slate-600 mt-2">เปลี่ยนเรื่องกฎหมายมรดกที่ดูซับซ้อน ให้กลายเป็นแนวทางปฏิบัติจริงได้ทันที 4 ประการ</p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                            <div class="w-11 h-11 rounded-2xl bg-navy-900 text-amber-400 flex items-center justify-center font-heading font-bold text-lg mb-4">1</div>
+                            <h3 class="text-base font-bold text-navy-900 mb-2">เลือกทำพินัยกรรมถูกแบบ</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                เข้าใจประเภทพินัยกรรมตามกฎหมายไทย (เขียนเองทั้งฉบับ, พิมพ์แล้วลงนามต่อหน้าพยาน 2 คน, เอกสารฝ่ายเมือง) ไม่ตกเป็นโมฆะ
+                            </p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                            <div class="w-11 h-11 rounded-2xl bg-amber-500 text-navy-950 flex items-center justify-center font-heading font-bold text-lg mb-4">2</div>
+                            <h3 class="text-base font-bold text-navy-900 mb-2">รู้ข้อจำกัดพินัยกรรมดิจิทัล</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                ทราบว่าเหตุใดการอัดคลิปวิดีโอในมือถือหรือไฟล์ PDF เซ็นดิจิทัลลอยๆ จึงยังไม่สมบูรณ์ตามกฎหมายไทย และวิธีทำให้ถูกต้อง
+                            </p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                            <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-heading font-bold text-lg mb-4">3</div>
+                            <h3 class="text-base font-bold text-navy-900 mb-2">เข้าใจลำดับสิทธิทายาท</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                รู้ลำดับทายาทโดยธรรม 6 ลำดับ สิทธิของคู่สมรส และหลักจริยธรรมในการจัดการข้อมูลส่วนตัวหลังความตายอย่างเป็นธรรม
+                            </p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 transition">
+                            <div class="w-11 h-11 rounded-2xl bg-sky-600 text-white flex items-center justify-center font-heading font-bold text-lg mb-4">4</div>
+                            <h3 class="text-base font-bold text-navy-900 mb-2">เก็บรักษาเอกสารและกุญแจดิจิทัล</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                รู้วิธีเข้ารหัสไฟล์ร่างพินัยกรรม จัดทำบัญชีสินทรัพย์ดิจิทัล (Digital Asset Inventory) ป้องกันการสูญหายหรือถูกปลอมแปลง
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            `;
+        }
+
+        // 2. กฎหมายดิจิทัล (#/law)
+        function renderLawPage() {
+            return `
+            <div class="page-fade space-y-8">
+                <div class="border-b border-amber-200/80 pb-6">
+                    <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-heading font-semibold">มิติที่ 1 : กฎหมายดิจิทัลและกฎหมายมรดก (Digital & Inheritance Law)</span>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-navy-900 mt-2">กฎหมายไทยที่เกี่ยวข้องกับพินัยกรรม มรดก และธุรกรรมดิจิทัล</h1>
+                    <p class="text-slate-600 mt-2">ทำความเข้าใจโครงสร้างกฎหมายไทย 3 ฉบับหลักที่กำหนดความถูกต้องของพินัยกรรม สิทธิทายาท และข้อจำกัดทางอิเล็กทรอนิกส์</p>
+                </div>
+
+                <!-- กฎหมาย 3 ฉบับ -->
+                <div class="space-y-6">
+                    <!-- กฎหมายฉบับที่ 1 -->
+                    <article class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="px-3.5 py-1 rounded-lg bg-navy-900 text-amber-300 text-xs font-heading font-bold">กฎหมายฉบับที่ 1 : กฎหมายหลักว่าด้วยมรดกและพินัยกรรม</span>
+                            <span class="text-xs text-slate-500">หมวดหลักการพื้นฐาน</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-navy-900">ประมวลกฎหมายแพ่งและพาณิชย์ (ป.พ.พ.) บรรพ 6 ว่าด้วยมรดก</h2>
+                        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                            กฎหมายหลักที่กำหนดว่าเมื่อบุคคลเสียชีวิต ทรัพย์สิน สิทธิ และหน้าที่ต่างๆ (กองมรดก) จะตกทอดแก่ผู้ใดบ้าง และกำหนด "แบบของพินัยกรรม" ที่ถูกต้องตามกฎหมาย ซึ่งหากทำผิดแบบจะตกเป็น <strong>โมฆะ (เสียเปล่า)</strong> ทันที
+                        </p>
+
+                        <div class="grid md:grid-cols-2 gap-4 bg-cream-100/80 rounded-2xl p-5 border border-amber-200/70">
+                            <div class="space-y-2">
+                                <h3 class="font-bold text-navy-900 text-sm sm:text-base">1) ลำดับทายาทโดยธรรม (มาตรา 1629 & 1635)</h3>
+                                <p class="text-sm text-slate-700 leading-relaxed">
+                                    หากไม่ได้ทำพินัยกรรม มรดกจะแบ่งให้ <strong>คู่สมรสที่จดทะเบียนถูกต้อง</strong> ร่วมกับทายาทโดยธรรม 6 ลำดับ ได้แก่: (1) ผู้สืบสันดาน (บุตร หลาน) (2) บิดามารดา (3) พี่น้องร่วมบิดามารดาเดียวกัน (4) พี่น้องร่วมบิดาหรือมารดา (5) ปู่ ย่า ตา ยาย (6) ลุง ป้า น้า อา
+                                </p>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="font-bold text-navy-900 text-sm sm:text-base">2) แบบของพินัยกรรมและข้อจำกัดดิจิทัล (มาตรา 1656-1663)</h3>
+                                <ul class="text-sm text-slate-700 space-y-1.5 list-disc pl-5">
+                                    <li><strong>แบบธรรมดา (ม.1656):</strong> พิมพ์หรือให้คนอื่นเขียนได้ แต่ผู้ทำต้องลงลายมือชื่อต่อหน้าพยานอย่างน้อย 2 คนพร้อมกัน</li>
+                                    <li><strong>แบบเขียนเองทั้งฉบับ (ม.1657):</strong> เขียนด้วยลายมือตนเองทั้งหมด ลงวันเดือนปี และลายมือชื่อ (ไม่ต้องมีพยาน)</li>
+                                    <li><strong>แบบเอกสารฝ่ายเมือง (ม.1658):</strong> ไปแจ้งข้อความต่อนายอำเภอ/ผู้อำนวยการเขต</li>
+                                    <li><strong>ข้อจำกัดไฟล์เสียง/วิดีโอ:</strong> การอัดคลิปในมือถือไม่ถือเป็นพินัยกรรม ยกเว้น <em>พฤติการณ์พิเศษใกล้ความตายต่อหน้าพยาน 2 คน (ม.1663)</em></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="https://www.krisdika.go.th/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-heading font-semibold text-amber-700 hover:text-amber-900 transition">
+                                <span>อ่านต้นฉบับกฎหมาย: สำนักงานคณะกรรมการกฤษฎีกา (ประมวลกฎหมายแพ่งและพาณิชย์ บรรพ 6)</span>
+                                <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        </div>
+                    </article>
+
+                    <!-- กฎหมายฉบับที่ 2 และ 3 -->
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <!-- กฎหมายฉบับที่ 2 -->
+                        <article class="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-slate-200 flex flex-col justify-between space-y-5">
+                            <div class="space-y-3">
+                                <span class="px-3 py-1 rounded-lg bg-amber-600 text-white text-xs font-heading font-bold">กฎหมายฉบับที่ 2 : กฎหมายธุรกรรมดิจิทัล</span>
+                                <h2 class="text-xl font-bold text-navy-900">พ.ร.บ. ว่าด้วยธุรกรรมทางอิเล็กทรอนิกส์ พ.ศ. 2544 และที่แก้ไขเพิ่มเติม</h2>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    แม้กฎหมายฉบับนี้จะรับรองให้ข้อมูลอิเล็กทรอนิกส์และลายมือชื่ออิเล็กทรอนิกส์ (E-Signature) มีผลผูกพันทางกฎหมายเช่นเดียวกับกระดาษ แต่มี <strong>ข้อยกเว้นสำคัญ</strong> ที่ผู้ทำพินัยกรรมต้องรู้:
+                                </p>
+                                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2 text-sm text-slate-700">
+                                    <p><strong>มาตรา 3 และพระราชกฤษฎีกากำหนดข้อยกเว้น:</strong> กำหนดชัดเจนว่า <em>"มิให้นำพระราชบัญญัตินี้มาใช้บังคับแก่ธุรกรรมเกี่ยวกับครอบครัวและมรดก"</em></p>
+                                    <p><strong>ผลทางกฎหมาย:</strong> การสร้างไฟล์ PDF พินัยกรรมแล้วแปะลายเซ็นดิจิทัล หรือส่งพินัยกรรมทางอีเมล/แชทไลน์ โดยไม่พิมพ์ออกมาลงนามจริงบนกระดาษต่อหน้าพยาน ยังไม่มีผลสมบูรณ์เป็นพินัยกรรมตามกฎหมายไทยในปัจจุบัน</p>
+                                </div>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100">
+                                <a href="https://www.etda.or.th/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-heading font-semibold text-navy-800 hover:text-amber-700 transition">
+                                    <span>อ่านข้อมูลต้นฉบับ: สำนักงานพัฒนาธุรกรรมทางอิเล็กทรอนิกส์ (ETDA)</span>
+                                    <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                </a>
+                            </div>
+                        </article>
+
+                        <!-- กฎหมายฉบับที่ 3 -->
+                        <article class="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-slate-200 flex flex-col justify-between space-y-5">
+                            <div class="space-y-3">
+                                <span class="px-3 py-1 rounded-lg bg-emerald-700 text-white text-xs font-heading font-bold">กฎหมายฉบับที่ 3 : การคุ้มครองข้อมูลส่วนบุคคล</span>
+                                <h2 class="text-xl font-bold text-navy-900">พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</h2>
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    เกี่ยวข้องกับการจัดเก็บข้อมูลส่วนบุคคลในเอกสารพินัยกรรม (เลขบัตรประชาชน บัญชีธนาคาร รายการทรัพย์สิน) และการเข้าถึงข้อมูลดิจิทัลของผู้เสียชีวิต:
+                                </p>
+                                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2 text-sm text-slate-700">
+                                    <p><strong>การคุ้มครองข้อมูลผู้ตายและผู้เกี่ยวข้อง:</strong> แม้ PDPA จะมุ่งคุ้มครองบุคคลธรรมดาที่มีชีวิตอยู่ แต่ข้อมูลในพินัยกรรมมักมีข้อมูลส่วนบุคคลของ <em>ทายาทและพยาน</em> ปรากฏอยู่ด้วย ผู้จัดทำและผู้เก็บรักษาจึงต้องป้องกันไม่ให้ข้อมูลรั่วไหล</p>
+                                    <p><strong>อำนาจของผู้จัดการมรดก:</strong> ธนาคารและผู้ให้บริการแพลตฟอร์มดิจิทัลมีหน้าที่ปกป้องข้อมูลลูกค้า จึงไม่สามารถเปิดเผยข้อมูลบัญชีผู้ตายให้ทายาททั่วไปได้ จนกว่าจะมี <strong>คำสั่งศาลตั้งผู้จัดการมรดก</strong> มายืนยันตัวตนอย่างถูกต้อง</p>
+                                </div>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100">
+                                <a href="https://www.pdpc.or.th/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-heading font-semibold text-emerald-700 hover:text-emerald-900 transition">
+                                    <span>อ่านข้อมูลต้นฉบับ: สำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล (PDPC)</span>
+                                    <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- ตัวอย่างการนำไปใช้ 2 ตัวอย่าง -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-200/80 space-y-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-navy-900">ตัวอย่างการนำกฎหมายไปใช้ในชีวิตจริง (2 ตัวอย่าง)</h2>
+                        <p class="text-sm text-slate-600 mt-1">เปรียบเทียบวิธีปฏิบัติที่เสี่ยงเป็นโมฆะกับวิธีปฏิบัติที่ถูกต้องตามกฎหมาย</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- ตัวอย่างที่ 1 -->
+                        <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                            <div class="bg-navy-900 text-amber-300 px-5 py-3.5 font-heading font-semibold text-sm">
+                                ตัวอย่างที่ 1 : การจัดทำพินัยกรรมด้วยเครื่องมือดิจิทัล (คอมพิวเตอร์ / มือถือ)
+                            </div>
+                            <div class="p-5 space-y-4">
+                                <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                                    <span class="text-xs font-bold text-rose-700 block mb-1">❌ แบบที่ไม่มีผลตามกฎหมาย (เป็นโมฆะ):</span>
+                                    <p class="text-sm text-slate-700 leading-relaxed">คุณสมศักดิ์อัดคลิปวิดีโอในสมาร์ทโฟนพูดแบ่งมรดกให้ลูกๆ หรือพิมพ์พินัยกรรมในแอป Notes บนแท็บเล็ตแล้วใช้ปากกา Stylus เซ็นชื่อบนหน้าจอเก็บเป็นไฟล์ PDF ไว้ในเครื่องโดยไม่ได้พิมพ์ออกมาลงนามต่อหน้าพยาน</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                                    <span class="text-xs font-bold text-emerald-700 block mb-1">✅ แบบที่ถูกต้องตามกฎหมาย (ป.พ.พ. มาตรา 1656):</span>
+                                    <p class="text-sm text-slate-700 leading-relaxed">คุณสมศักดิ์พิมพ์ร่างพินัยกรรมในคอมพิวเตอร์ให้เรียบร้อย จากนั้น <strong>สั่งพิมพ์ (Print) ออกมาเป็นกระดาษ</strong> แล้วลงลายมือชื่อจริงด้วยปากกาต่อหน้าพยานที่บรรลุนิติภาวะและไม่มีส่วนได้เสียอย่างน้อย 2 คนพร้อมกัน พร้อมให้พยานลงชื่อรับรองในขณะนั้น</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ตัวอย่างที่ 2 -->
+                        <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                            <div class="bg-navy-900 text-amber-300 px-5 py-3.5 font-heading font-semibold text-sm">
+                                ตัวอย่างที่ 2 : การขอเข้าถึงบัญชีธนาคารออนไลน์และสินทรัพย์ดิจิทัลของผู้เสียชีวิต
+                            </div>
+                            <div class="p-5 space-y-4">
+                                <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                                    <span class="text-xs font-bold text-rose-700 block mb-1">❌ แบบที่เสี่ยงผิดกฎหมาย (ไม่ควรทำ):</span>
+                                    <p class="text-sm text-slate-700 leading-relaxed">หลังคุณพ่อเสียชีวิต ลูกชายแอบเอานิ้วของคุณพ่อมาสแกนเปิดแอปธนาคารในมือถือ แล้วโอนเงินทั้งหมดออกมาแบ่งกันเองโดยไม่แจ้งธนาคารและไม่ผ่านกระบวนการตั้งผู้จัดการมรดก เสี่ยงผิดฐานลักทรัพย์/เข้าถึงระบบคอมพิวเตอร์โดยมิชอบและถูกทายาทอื่นฟ้องร้อง</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                                    <span class="text-xs font-bold text-emerald-700 block mb-1">✅ แบบที่ถูกต้องตามกฎหมาย:</span>
+                                    <p class="text-sm text-slate-700 leading-relaxed">ทายาทรวบรวมใบมรณบัตรและพินัยกรรม ยื่นคำร้องต่อศาลเพื่อขอ <strong>คำสั่งตั้งผู้จัดการมรดก</strong> จากนั้นนำคำสั่งศาลและบัตรประชาชนไปยื่นต่อธนาคารและศูนย์ซื้อขายสินทรัพย์ดิจิทัล (Exchange) อย่างเป็นทางการเพื่อโอนทรัพย์สินเข้ากองมรดกและแบ่งปันอย่างโปร่งใส</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            `;
+        }
+
+        // 3. จริยธรรมดิจิทัล (#/ethics)
+        function renderEthicsPage() {
+            return `
+            <div class="page-fade space-y-8">
+                <div class="border-b border-amber-200/80 pb-6">
+                    <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-heading font-semibold">มิติที่ 2 : จริยธรรมดิจิทัล (Digital Ethics)</span>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-navy-900 mt-2">จริยธรรมในการจัดการพินัยกรรมและข้อมูลดิจิทัลหลังความตาย</h1>
+                    <p class="text-slate-600 mt-2">นอกจากความถูกต้องตามตัวบทกฎหมายแล้ว การจัดการมรดกในยุคดิจิทัลยังต้องคำนึงถึงศักดิ์ศรีความเป็นมนุษย์ ความเป็นส่วนตัว และความยุติธรรมระหว่างทายาท</p>
+                </div>
+
+                <!-- ผู้ได้รับผลกระทบ (Stakeholders) -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-5">
+                    <h2 class="text-xl font-bold text-navy-900">ผู้มีส่วนได้ส่วนเสียและผู้ได้รับผลกระทบ (Stakeholders)</h2>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="p-4 rounded-2xl bg-cream-100 border border-amber-200/70">
+                            <h3 class="font-bold text-navy-900 text-sm mb-1">1. เจ้ามรดก (ผู้ทำพินัยกรรม)</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">เจ้าของเจตนารมณ์และข้อมูลส่วนตัวที่ต้องการให้ทรัพย์สินตกถึงคนที่รักและรักษาความลับส่วนตัวไว้</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-cream-100 border border-amber-200/70">
+                            <h3 class="font-bold text-navy-900 text-sm mb-1">2. ทายาทโดยธรรม</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">คู่สมรส บุตร บิดามารดา ที่ได้รับผลกระทบโดยตรงต่อความสัมพันธ์ในครอบครัวและส่วนแบ่งทรัพย์สิน</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-cream-100 border border-amber-200/70">
+                            <h3 class="font-bold text-navy-900 text-sm mb-1">3. ผู้รับพินัยกรรม</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">บุคคลหรือองค์กรที่ได้รับทรัพย์สินตามเจตนาในพินัยกรรม ซึ่งอาจถูกครหาหากกระบวนการไม่โปร่งใส</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-cream-100 border border-amber-200/70">
+                            <h3 class="font-bold text-navy-900 text-sm mb-1">4. ผู้จัดการมรดก</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">ผู้ทำหน้าที่รวบรวมและแบ่งมรดก ต้องแบกรับความรับผิดชอบทางจริยธรรมในการเปิดเผยข้อมูลอย่างซื่อสัตย์</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-cream-100 border border-amber-200/70">
+                            <h3 class="font-bold text-navy-900 text-sm mb-1">5. ผู้ให้บริการแพลตฟอร์ม</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">ธนาคาร โซเชียลมีเดีย และกระดานเทรดคริปโทฯ ที่ต้องรักษาสมดุลระหว่างความลับลูกค้ากับสิทธิของทายาท</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ประเด็นจริยธรรมที่ 1 + Interactive Toggle -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-5">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                        <div class="space-y-1">
+                            <span class="px-3 py-1 rounded-lg bg-navy-900 text-amber-300 text-xs font-heading font-bold">ประเด็นจริยธรรมที่ 1</span>
+                            <h2 class="text-xl font-bold text-navy-900">การเข้าถึงข้อมูลส่วนตัวและบัญชีดิจิทัลของผู้เสียชีวิต (Digital Privacy After Death)</h2>
+                            <p class="text-sm text-slate-600">เมื่อเจ้ามรดกเสียชีวิต ทายาทพบรหัสผ่านเข้าอีเมลหรือแชทส่วนตัวซึ่งมีทั้งข้อมูลบัญชีทรัพย์สินและเรื่องส่วนตัวปะปนกัน</p>
+                        </div>
+                        <!-- ปุ่มสลับทางเลือก -->
+                        <div class="inline-flex flex-wrap rounded-xl bg-slate-100 p-1 self-start shrink-0">
+                            <button onclick="setEthicsTab(1, 'optionA')" class="px-3.5 py-2 rounded-lg text-xs font-heading font-semibold transition ${appState.ethicsIssue1Tab === 'optionA' ? 'bg-navy-900 text-white shadow' : 'text-slate-600 hover:text-navy-900'}">
+                                ทางเลือกที่ 1
+                            </button>
+                            <button onclick="setEthicsTab(1, 'optionB')" class="px-3.5 py-2 rounded-lg text-xs font-heading font-semibold transition ${appState.ethicsIssue1Tab === 'optionB' ? 'bg-navy-900 text-white shadow' : 'text-slate-600 hover:text-navy-900'}">
+                                ทางเลือกที่ 2
+                            </button>
+                            <button onclick="setEthicsTab(1, 'recommend')" class="px-3.5 py-2 rounded-lg text-xs font-heading font-semibold transition ${appState.ethicsIssue1Tab === 'recommend' ? 'bg-amber-500 text-navy-950 font-bold shadow' : 'text-slate-600 hover:text-navy-900'}">
+                                ข้อเสนอที่เหมาะสมที่สุด
+                            </button>
+                        </div>
+                    </div>
+
+                    ${appState.ethicsIssue1Tab === 'optionA' ? `
+                    <div class="p-5 rounded-2xl bg-rose-50/60 border border-rose-200 space-y-2 page-fade">
+                        <h3 class="font-bold text-rose-900 text-base">ทางเลือกที่ 1 : เปิดอ่านและเผยแพร่ข้อมูลดิจิทัลของผู้เสียชีวิตทั้งหมดโดยไม่จำกัดขอบเขต</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>แนวคิด:</strong> มองว่าเมื่อเสียชีวิตแล้ว บุคคลย่อมไม่มีสิทธิความเป็นส่วนตัวอีกต่อไป ทายาทจึงสามารถเปิดอ่านแชทส่วนตัว รูปภาพลับ หรือนำข้อความส่วนตัวของผู้ตายมาเปิดเผยต่อสาธารณะได้ทั้งหมด
+                        </p>
+                        <p class="text-sm text-rose-800">
+                            <strong>ผลเสีย:</strong> ละเมิดศักดิ์ศรีความเป็นมนุษย์ของผู้ตาย สร้างความเจ็บปวดทางจิตใจให้คนในครอบครัว และอาจกระทบสิทธิความเป็นส่วนตัวของบุคคลที่สามที่เคยสนทนากับผู้ตายด้วย
+                        </p>
+                    </div>
+                    ` : ''}
+
+                    ${appState.ethicsIssue1Tab === 'optionB' ? `
+                    <div class="p-5 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-2 page-fade">
+                        <h3 class="font-bold text-amber-900 text-base">ทางเลือกที่ 2 : สั่งลบหรือล็อกบัญชีดิจิทัลทั้งหมดทันทีโดยไม่ตรวจสอบทรัพย์สิน</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>แนวคิด:</strong> ยึดถือความเป็นส่วนตัวสูงสุดจนไม่ยอมให้ทายาทหรือผู้จัดการมรดกเข้าถึงบัญชีอีเมลหรือคลาวด์ใดๆ เลย
+                        </p>
+                        <p class="text-sm text-amber-900">
+                            <strong>ผลเสีย:</strong> อาจทำให้ข้อมูลสำคัญทางกฎหมาย เอกสารสิทธิ์ กรมธรรม์ประกันชีวิต หรือรหัสเข้าถึงสินทรัพย์ดิจิทัลที่มีมูลค่าถูกทำลายหรือสูญหายถาวร ทำให้ทายาทเสียสิทธิอันชอบธรรม
+                        </p>
+                    </div>
+                    ` : ''}
+
+                    ${appState.ethicsIssue1Tab === 'recommend' ? `
+                    <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-300 space-y-2 page-fade">
+                        <h3 class="font-bold text-emerald-900 text-base">✅ ข้อเสนอที่เหมาะสมที่สุด : หลัก "เข้าถึงเท่าที่จำเป็นเพื่อการจัดการมรดก" (Need-to-Know Access)</h3>
+                        <p class="text-sm text-slate-800 leading-relaxed">
+                            <strong>เหตุผลประกอบ:</strong> ควรตั้งค่าฟีเจอร์ <em>Legacy Contact (ผู้ติดต่อรับมรดกบัญชี)</em> ล่วงหน้า และกำหนดให้ผู้จัดการมรดกเข้าถึงเฉพาะโฟลเดอร์หรืออีเมลที่เกี่ยวกับการเงิน กรมธรรม์ และทรัพย์สินเท่านั้น โดยงดเว้นการเปิดอ่านหรือเผยแพร่ข้อความส่วนตัวที่ไม่เกี่ยวข้อง เพื่อรักษาสมดุลระหว่าง <strong>การเคารพความเป็นส่วนตัวของผู้วายชนม์</strong> และ <strong>สิทธิอันชอบธรรมของทายาท</strong>
+                        </p>
+                    </div>
+                    ` : ''}
+                </section>
+
+                <!-- ประเด็นจริยธรรมที่ 2 + Interactive Toggle -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-5">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                        <div class="space-y-1">
+                            <span class="px-3 py-1 rounded-lg bg-amber-600 text-white text-xs font-heading font-bold">ประเด็นจริยธรรมที่ 2</span>
+                            <h2 class="text-xl font-bold text-navy-900">ความโปร่งใสและเป็นธรรมในการทำพินัยกรรมและการเปิดเผยทรัพย์สินดิจิทัล</h2>
+                            <p class="text-sm text-slate-600">กรณีทายาทบางคนชักจูงผู้สูงอายุให้แก้ไขพินัยกรรมผ่านสื่อออนไลน์ หรือทายาทที่ดูแลอุปกรณ์ดิจิทัลแอบปิดบังบัญชีคริปโทฯ ไม่แจ้งทายาทร่วม</p>
+                        </div>
+                        <!-- ปุ่มสลับทางเลือก -->
+                        <div class="inline-flex flex-wrap rounded-xl bg-slate-100 p-1 self-start shrink-0">
+                            <button onclick="setEthicsTab(2, 'optionA')" class="px-3.5 py-2 rounded-lg text-xs font-heading font-semibold transition ${appState.ethicsIssue2Tab === 'optionA' ? 'bg-navy-900 text-white shadow' : 'text-slate-600 hover:text-navy-900'}">
+                                ทางเลือกที่ 1
+                            </button>
+                            <button onclick="setEthicsTab(2, 'optionB')" class="px-3.5 py-2 rounded-lg text-xs font-heading font-semibold transition ${appState.ethicsIssue2Tab === 'optionB' ? 'bg-navy-900 text-white shadow' : 'text-slate-600 hover:text-navy-900'}">
+                                ทางเลือกที่ 2
+                            </button>
+                            <button onclick="setEthicsTab(2, 'recommend')" class="px-3.5 py-2 rounded-lg text-xs font-heading font-semibold transition ${appState.ethicsIssue2Tab === 'recommend' ? 'bg-amber-500 text-navy-950 font-bold shadow' : 'text-slate-600 hover:text-navy-900'}">
+                                ข้อเสนอที่เหมาะสมที่สุด
+                            </button>
+                        </div>
+                    </div>
+
+                    ${appState.ethicsIssue2Tab === 'optionA' ? `
+                    <div class="p-5 rounded-2xl bg-rose-50/60 border border-rose-200 space-y-2 page-fade">
+                        <h3 class="font-bold text-rose-900 text-base">ทางเลือกที่ 1 : ปิดบังข้อมูลทรัพย์สินดิจิทัลหรือโน้มน้าวผู้สูงอายุเพื่อประโยชน์ส่วนตัว</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>แนวคิด:</strong> อาศัยความได้เปรียบทางความรู้ด้านเทคโนโลยี (Digital Divide) แอบโอนสินทรัพย์ดิจิทัลที่ตรวจสอบยาก หรือใช้ความใกล้ชิดชักจูงผู้สูงอายุให้ยกทรัพย์สินให้ตนเพียงผู้เดียว
+                        </p>
+                        <p class="text-sm text-rose-800">
+                            <strong>ผลเสีย:</strong> ทำลายความไว้วางใจและสายสัมพันธ์ในครอบครัวอย่างถาวร เกิดการฟ้องร้องเพิกถอนพินัยกรรมฐานฉ้อฉล/ข่มขู่ และเสี่ยงถูกกำจัดมิให้รับมรดกตามกฎหมายฐานยักย้ายปิดบังทรัพย์มรดก
+                        </p>
+                    </div>
+                    ` : ''}
+
+                    ${appState.ethicsIssue2Tab === 'optionB' ? `
+                    <div class="p-5 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-2 page-fade">
+                        <h3 class="font-bold text-amber-900 text-base">ทางเลือกที่ 2 : หลีกเลี่ยงการพูดคุยเรื่องพินัยกรรมเพราะถือเป็นเรื่องอัปมงคล</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>แนวคิด:</strong> ไม่จัดทำบัญชีทรัพย์สินและไม่สื่อสารเจตนารมณ์ล่วงหน้า ปล่อยให้ทายาทไปตกลงแบ่งกันเองภายหลัง
+                        </p>
+                        <p class="text-sm text-amber-900">
+                            <strong>ผลเสีย:</strong> เมื่อเกิดเหตุไม่คาดฝัน ทายาทไม่ทราบว่ามีทรัพย์สินดิจิทัลอยู่ที่ใดบ้าง และมักเกิดความเข้าใจผิดหรือทะเลาะเบาะแว้งกันเองในภายหลัง
+                        </p>
+                    </div>
+                    ` : ''}
+
+                    ${appState.ethicsIssue2Tab === 'recommend' ? `
+                    <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-300 space-y-2 page-fade">
+                        <h3 class="font-bold text-emerald-900 text-base">✅ ข้อเสนอที่เหมาะสมที่สุด : ยึดหลักความซื่อสัตย์ โปร่งใส และมีพยานที่เป็นกลาง</h3>
+                        <p class="text-sm text-slate-800 leading-relaxed">
+                            <strong>เหตุผลประกอบ:</strong> ในการทำพินัยกรรมของผู้สูงอายุควรให้มีพยานบุคคลที่เป็นกลาง (เช่น ทนายความ หรือเจ้าหน้าที่เขต/อำเภอ) รับรองเจตนาที่แท้จริงโดยปราศจากการชี้นำ และผู้จัดการมรดกต้องจัดทำ <strong>บัญชีทรัพย์สินทั้งหมดรวมถึงสินทรัพย์ดิจิทัล</strong> แสดงต่อทายาททุกคนอย่างโปร่งใส เพื่อให้เกิดความเป็นธรรมและความปรองดองในครอบครัว
+                        </p>
+                    </div>
+                    ` : ''}
+                </section>
+            </div>
+            `;
+        }
+
+        // 4. ความปลอดภัยดิจิทัล (#/security)
+        function renderSecurityPage() {
+            const securityPairs = [
+                {
+                    num: '01',
+                    riskTitle: 'ไฟล์ร่างพินัยกรรมและรายการทรัพย์สินรั่วไหลบนคลาวด์หรืออีเมล',
+                    riskDesc: 'การพิมพ์ร่างพินัยกรรมและบัญชีเลขที่ธนาคารเก็บไว้ใน Google Drive, iCloud หรือส่งผ่านอีเมลโดยไม่ใส่รหัสผ่าน หากบัญชีถูกแฮก มิจฉาชีพจะรู้ข้อมูลทรัพย์สินทั้งหมดและนำไปปลอมแปลงหรือแบล็กเมล์ได้',
+                    measureTitle: 'การเข้ารหัสไฟล์ (File Encryption) ตั้งรหัสผ่านแข็งแรง และเปิดใช้งาน 2FA',
+                    measureDesc: 'เข้ารหัสไฟล์ PDF/ZIP ด้วยรหัสผ่านที่ซับซ้อน (12 ตัวอักษรขึ้นไป) เปิดใช้งานการยืนยันตัวตนแบบสองชั้น (Two-Factor Authentication: 2FA) บนอีเมลและคลาวด์ทุกบัญชี และลบไฟล์ร่างออกจากถังขยะหลังพิมพ์ฉบับจริง'
+                },
+                {
+                    num: '02',
+                    riskTitle: 'สินทรัพย์ดิจิทัล (Crypto Wallet, บัญชีออนไลน์) สูญหายถาวรเพราะไม่มีใครรู้รหัส',
+                    riskDesc: 'เจ้าของทรัพย์สินเก็บเงินคริปโทฯ ใน Hardware Wallet หรือบัญชีลงทุนต่างประเทศ แต่ไม่ได้บันทึกวลีกู้คืน (Seed Phrase) หรือไม่เคยบอกวิธีเข้าถึงไว้ เมื่อเสียชีวิตทรัพย์สินจะถูกล็อกตลอดกาล',
+                    measureTitle: 'จัดทำบัญชีสินทรัพย์ดิจิทัล (Digital Asset Inventory) และระบบส่งมอบกุญแจสำรอง',
+                    measureDesc: 'จดบันทึกรายชื่อแพลตฟอร์มและ Seed Phrase ลงบนแผ่นโลหะหรือกระดาษกันน้ำ (ห้ามถ่ายรูปเก็บในมือถือ) แยกเก็บในตู้นิรภัยธนาคาร พร้อมตั้งค่า Legacy Contact (เช่น Apple/Google) เพื่อส่งมอบสิทธิ์ให้ทายาทเมื่อถึงเวลา'
+                },
+                {
+                    num: '03',
+                    riskTitle: 'การปลอมแปลงหรือแอบแก้ไขไฟล์พินัยกรรมดิจิทัลก่อนนำไปจัดพิมพ์',
+                    riskDesc: 'ผู้ไม่หวังดีเข้าถึงไฟล์เอกสารร่างพินัยกรรมในคอมพิวเตอร์ แล้วแอบแก้ไขตัวเลขส่วนแบ่งหรือชื่อผู้รับพินัยกรรมก่อนนำไปปรินต์ให้ผู้สูงอายุลงนามโดยไม่ทันตรวจสอบ',
+                    measureTitle: 'การใช้ค่าแฮช/การประทับเวลา (Hash / Timestamp) และเก็บต้นฉบับกระดาษในที่ปลอดภัย',
+                    measureDesc: 'ตรวจสอบความถูกต้องของไฟล์ด้วยค่า Hash หรือบริการประทับเวลาอิเล็กทรอนิกส์ (e-Timestamp) อ่านทวนทุกบรรทัดก่อนลงนามจริง และเก็บพินัยกรรมฉบับจริงไว้ในที่ปลอดภัย (เช่น ตู้นิรภัย หรือฝากเก็บที่สำนักงานเขต/อำเภอ)'
+                },
+                {
+                    num: '04',
+                    riskTitle: 'มิจฉาชีพแอบอ้างเป็นทนายความหรือเจ้าหน้าที่หลอกให้กรอกข้อมูลทำพินัยกรรมออนไลน์',
+                    riskDesc: 'เว็บไซต์ปลอมหรือแก๊งคอลเซ็นเตอร์ส่งลิงก์เชิญชวนทำพินัยกรรมออนไลน์ฟรี หรืออ้างว่ามีมรดกตกทอด เพื่อหลอกดูดเลขบัตรประชาชน 13 หลัก ข้อมูลบัญชีธนาคาร และรหัส OTP',
+                    measureTitle: 'ตรวจสอบความน่าเชื่อถือของหน่วยงานและไม่กรอกข้อมูลสำคัญในเว็บที่ไม่ปลอดภัย',
+                    measureDesc: 'ตรวจสอบโดเมนเว็บไซต์ (ต้องเป็น HTTPS และเป็นหน่วยงานที่น่าเชื่อถือ) ไม่กรอกเลขบัตรประชาชนหรือรหัสผ่านผ่านลิงก์ที่ส่งทาง SMS/LINE และปรึกษาสภาทนายความหรือสำนักงานเขตโดยตรง'
+                }
+            ];
+
+            return `
+            <div class="page-fade space-y-8">
+                <div class="border-b border-amber-200/80 pb-6">
+                    <span class="px-3 py-1 rounded-full bg-navy-900 text-amber-300 text-xs font-heading font-semibold">มิติที่ 3 : ความปลอดภัยทางดิจิทัล (Digital Security)</span>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-navy-900 mt-2">ความเสี่ยงและมาตรการปกป้องเอกสารพินัยกรรมและสินทรัพย์ดิจิทัล</h1>
+                    <p class="text-slate-600 mt-2">วิเคราะห์ความเสี่ยง 4 ประการที่อาจทำให้พินัยกรรมรั่วไหล ถูกปลอมแปลง หรือสินทรัพย์ดิจิทัลสูญหาย พร้อมมาตรการป้องกันและขั้นตอนรับมือเหตุฉุกเฉิน</p>
+                </div>
+
+                <!-- 4 ความเสี่ยง vs 4 มาตรการป้องกัน -->
+                <div class="space-y-4">
+                    <h2 class="text-xl font-bold text-navy-900">จับคู่ 4 ความเสี่ยงสำคัญ กับ 4 มาตรการป้องกันที่ตรงจุด</h2>
+                    
+                    <div class="space-y-4">
+                        ${securityPairs.map(item => `
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden grid lg:grid-cols-12">
+                            <!-- ฝั่งความเสี่ยง -->
+                            <div class="lg:col-span-6 p-6 bg-rose-50/40 border-b lg:border-b-0 lg:border-r border-slate-200 space-y-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-rose-600 text-white text-xs font-heading font-bold">ความเสี่ยงที่ ${item.num}</span>
+                                    <span class="text-xs font-semibold text-rose-700">ภัยคุกคาม (Risk / Threat)</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 text-base">${item.riskTitle}</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">${item.riskDesc}</p>
+                            </div>
+                            <!-- ฝั่งมาตรการป้องกัน -->
+                            <div class="lg:col-span-6 p-6 bg-emerald-50/30 space-y-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-emerald-700 text-white text-xs font-heading font-bold">มาตรการป้องกันที่ ${item.num}</span>
+                                    <span class="text-xs font-semibold text-emerald-700">แนวทางป้องกัน (Safeguard)</span>
+                                </div>
+                                <h3 class="font-bold text-navy-900 text-base">${item.measureTitle}</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">${item.measureDesc}</p>
+                            </div>
+                        </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- ลำดับการรับมือเบื้องต้นเมื่อเกิดเหตุ 5 ขั้นตอน -->
+                <section class="bg-navy-900 text-white rounded-3xl p-6 sm:p-8 shadow-lg space-y-6">
+                    <div>
+                        <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-heading font-semibold">Incident Response Plan</span>
+                        <h2 class="text-xl sm:text-2xl font-bold mt-2">ลำดับการรับมือเบื้องต้น 5 ขั้นตอน เมื่อพบว่าข้อมูลพินัยกรรมหรือบัญชีมรดกรั่วไหล/ถูกแอบอ้าง</h2>
+                        <p class="text-sm text-slate-300 mt-1">หากสงสัยว่าไฟล์ร่างพินัยกรรมถูกแฮก รหัสผ่านบัญชีทรัพย์สินรั่วไหล หรือมีมิจฉาชีพแอบอ้างชื่อ ให้ดำเนินการตามลำดับทันที</p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="p-4 rounded-2xl bg-navy-800/90 border border-slate-700 space-y-2">
+                            <div class="w-8 h-8 rounded-full bg-rose-500 text-white font-heading font-bold flex items-center justify-center text-sm">1</div>
+                            <h3 class="font-bold text-sm text-amber-300">ตัดการเชื่อมต่อและอายัดบัญชี</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">รีบเปลี่ยนรหัสผ่านอีเมล คลาวด์ และแอปธนาคารทั้งหมด เปิด 2FA และโทรอายัดบัญชีธนาคาร/กระดานเทรดคริปโทฯ ทันที</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-navy-800/90 border border-slate-700 space-y-2">
+                            <div class="w-8 h-8 rounded-full bg-amber-500 text-navy-950 font-heading font-bold flex items-center justify-center text-sm">2</div>
+                            <h3 class="font-bold text-sm text-amber-300">ยกเลิกพินัยกรรมฉบับที่เสี่ยง</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">หากข้อมูลในพินัยกรรมรั่วไหลหรือถูกปลอมแปลง ให้ทำพินัยกรรมฉบับใหม่ลงวันที่ล่าสุดเพื่อเพิกถอนฉบับเดิมตามกฎหมายทันที</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-navy-800/90 border border-slate-700 space-y-2">
+                            <div class="w-8 h-8 rounded-full bg-sky-400 text-navy-950 font-heading font-bold flex items-center justify-center text-sm">3</div>
+                            <h3 class="font-bold text-sm text-amber-300">รวบรวมหลักฐานดิจิทัล</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">บันทึกภาพหน้าจอ ประวัติการเข้าสู่ระบบ (Login Log) อีเมลปลอม หรือเบอร์โทรของมิจฉาชีพเก็บไว้เป็นหลักฐาน</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-navy-800/90 border border-slate-700 space-y-2">
+                            <div class="w-8 h-8 rounded-full bg-emerald-400 text-navy-950 font-heading font-bold flex items-center justify-center text-sm">4</div>
+                            <h3 class="font-bold text-sm text-amber-300">แจ้งเตือนสมาชิกในครอบครัว</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">รีบแจ้งทายาทและพยานในพินัยกรรมให้ทราบสถานการณ์ เพื่อป้องกันไม่ให้มิจฉาชีพนำข้อมูลไปหลอกลวงคนในครอบครัวต่อ</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-navy-800/90 border border-slate-700 space-y-2">
+                            <div class="w-8 h-8 rounded-full bg-indigo-400 text-navy-950 font-heading font-bold flex items-center justify-center text-sm">5</div>
+                            <h3 class="font-bold text-sm text-amber-300">แจ้งความตำรวจไซเบอร์</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">นำหลักฐานเข้าแจ้งความต่อกองบัญชาการตำรวจสืบสวนสอบสวนอาชญากรรมทางเทคโนโลยี (โทร 1441) และปรึกษาทนายความ</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            `;
+        }
+
+        // 5. กรณีศึกษา (#/casestudy)
+        function renderCaseStudyPage() {
+            return `
+            <div class="page-fade space-y-8">
+                <div class="border-b border-amber-200/80 pb-6">
+                    <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-heading font-semibold">กรณีศึกษาจำลอง (Interactive Case Study)</span>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-navy-900 mt-2">กรณีศึกษา: "พินัยกรรมในไฟล์ PDF กับกระเป๋าเงินดิจิทัลของคุณปู่สมชาย"</h1>
+                    <p class="text-slate-600 mt-2">ร่วมวิเคราะห์เหตุการณ์จำลองที่ผสมผสานระหว่างมรดกแบบดั้งเดิมกับสินทรัพย์ดิจิทัล ครบทั้ง 3 มิติ</p>
+                </div>
+
+                <!-- บริบทและผู้เกี่ยวข้อง -->
+                <div class="grid lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+                        <h2 class="text-xl font-bold text-navy-900 flex items-center space-x-2">
+                            <span class="w-2.5 h-6 rounded-full bg-amber-500 inline-block"></span>
+                            <span>บริบทของเหตุการณ์ (Context)</span>
+                        </h2>
+                        <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+                            <strong>คุณปู่สมชาย</strong> วัย 72 ปี เป็นอดีตวิศวกรที่ชื่นชอบเทคโนโลยี ก่อนเสียชีวิตด้วยโรคหัวใจวายเฉียบพลัน คุณปู่ได้พิมพ์พินัยกรรมลงในคอมพิวเตอร์แล้วบันทึกเป็น <strong>ไฟล์ PDF ชื่อ "พินัยกรรมของพ่อ.pdf"</strong> ใส่ไว้ในโฟลเดอร์ Google Drive ส่วนตัว โดยในไฟล์ระบุข้อความว่า <em>"ขอยกบ้านและที่ดินให้ลูกชายคนโต ส่วนเงินในกระเป๋าเงินคริปโทเคอร์เรนซี (Hardware Wallet) มูลค่า 3 ล้านบาท ขอยกให้ลูกสาวคนเล็ก"</em> พร้อมแปะรูปภาพลายเซ็นของตนเองไว้ท้ายไฟล์ PDF แต่ <strong>ไม่ได้สั่งพิมพ์ออกมาลงนามต่อหน้าพยาน</strong>
+                        </p>
+                        <p class="text-sm sm:text-base text-slate-700 leading-relaxed">
+                            หลังงานศพ ลูกชายคนโตเปิดคอมพิวเตอร์ของคุณปู่และพบไฟล์ PDF ดังกล่าว รวมถึงพบกระดาษจด <strong>Seed Phrase 24 คำ</strong> ของกระเป๋าเงินคริปโทฯ อยู่ในลิ้นชักโต๊ะทำงาน หากลูกชายคนโตนำเรื่องนี้ไปปรึกษาทนายความครอบครัว ผลทางกฎหมายและทางออกจะเป็นอย่างไร?
+                        </p>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+                        <h2 class="text-xl font-bold text-navy-900 flex items-center space-x-2">
+                            <span class="w-2.5 h-6 rounded-full bg-navy-900 inline-block"></span>
+                            <span>ผู้เกี่ยวข้องในเหตุการณ์ (Stakeholders)</span>
+                        </h2>
+                        <ul class="space-y-3 text-sm">
+                            <li class="p-3 rounded-xl bg-cream-100 border border-amber-200/70">
+                                <strong class="text-navy-900 block">1. คุณปู่สมชาย (เจ้ามรดก):</strong>
+                                <span class="text-slate-600">ผู้ตั้งใจแบ่งทรัพย์สินให้ลูกทั้งสองคนอย่างเท่าเทียม แต่เข้าใจผิดว่าไฟล์ PDF แปะลายเซ็นใช้เป็นพินัยกรรมได้</span>
+                            </li>
+                            <li class="p-3 rounded-xl bg-cream-100 border border-amber-200/70">
+                                <strong class="text-navy-900 block">2. ลูกชายคนโต:</strong>
+                                <span class="text-slate-600">ทายาทโดยธรรมผู้พบไฟล์ PDF และรหัส Seed Phrase ในคอมพิวเตอร์ของคุณปู่เป็นคนแรก</span>
+                            </li>
+                            <li class="p-3 rounded-xl bg-cream-100 border border-amber-200/70">
+                                <strong class="text-navy-900 block">3. ลูกสาวคนเล็ก:</strong>
+                                <span class="text-slate-600">ทายาทโดยธรรมที่มีชื่อรับมรดกกระเป๋าเงินดิจิทัลตามเจตนารมณ์ในไฟล์ PDF ของคุณปู่</span>
+                            </li>
+                            <li class="p-3 rounded-xl bg-cream-100 border border-amber-200/70">
+                                <strong class="text-navy-900 block">4. ทนายความครอบครัว:</strong>
+                                <span class="text-slate-600">ผู้ให้คำแนะนำทางกฎหมายและแนวทางการจัดการมรดกที่ถูกต้องตามประมวลกฎหมายแพ่งและพาณิชย์</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- จุดตัดสินใจ Interactive (Decision Point) -->
+                <section class="bg-gradient-to-br from-navy-900 to-navy-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+                    <div class="space-y-2">
+                        <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-heading font-semibold">จุดตัดสินใจ (Decision Point)</span>
+                        <h2 class="text-xl sm:text-2xl font-bold">หากคุณเป็น "ลูกชายคนโต" เมื่อทราบว่าไฟล์ PDF พินัยกรรมไม่มีผลสมบูรณ์ตามกฎหมาย คุณจะตัดสินใจอย่างไร?</h2>
+                        <p class="text-sm text-slate-300">ลองเลือกทางเลือกด้านล่างเพื่อดูผลกระทบที่จะเกิดขึ้นตามมา</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button onclick="setCaseDecision('ignore')" class="text-left p-5 rounded-2xl border-2 transition-all ${appState.caseDecision === 'ignore' ? 'bg-rose-950/80 border-rose-400 shadow-lg' : 'bg-white/5 border-white/15 hover:bg-white/10'}">
+                            <div class="font-heading font-bold text-rose-300 text-base mb-1">ทางเลือกที่ 1 : ลบไฟล์ PDF ทิ้ง แอบโอนเหรียญคริปโทฯ และขอหารครึ่งบ้านกับที่ดิน</div>
+                            <p class="text-xs text-slate-300 leading-relaxed">ถือโอกาสที่พินัยกรรม PDF เป็นโมฆะ แอบใช้ Seed Phrase โอนเหรียญ 3 ล้านบาทเข้ากระเป๋าตัวเองเงียบๆ แล้วนำบ้านกับที่ดินมาแบ่งคนละครึ่งตามกฎหมายทายาทโดยธรรม</p>
+                        </button>
+
+                        <button onclick="setCaseDecision('cooperate')" class="text-left p-5 rounded-2xl border-2 transition-all ${appState.caseDecision === 'cooperate' ? 'bg-emerald-950/80 border-emerald-400 shadow-lg' : 'bg-white/5 border-white/15 hover:bg-white/10'}">
+                            <div class="font-heading font-bold text-emerald-300 text-base mb-1">ทางเลือกที่ 2 : เปิดเผยไฟล์ PDF และ Seed Phrase ต่อหน้าทนายและน้องสาว เพื่อทำสัญญาแบ่งปันมรดก</div>
+                            <p class="text-xs text-slate-300 leading-relaxed">ยอมรับความจริงตามกฎหมายว่าไฟล์ PDF ไม่สมบูรณ์ แต่เคารพเจตนารมณ์สุดท้ายของคุณปู่ โดยชวนน้องสาวทำ "สัญญาประนีประนอมยอมความแบ่งปันทรัพย์มรดก" ให้เป็นไปตามความตั้งใจของคุณปู่</p>
+                        </button>
+                    </div>
+
+                    ${appState.caseDecision === 'ignore' ? `
+                    <div class="p-5 rounded-2xl bg-rose-500/20 border border-rose-400/50 text-sm space-y-2 page-fade">
+                        <h3 class="font-bold text-rose-200 text-base">⚠️ ผลลัพธ์ของการตัดสินใจ (ทางเลือกที่ 1 : ยักยอกปิดบังทรัพย์มรดก)</h3>
+                        <p class="text-slate-100 leading-relaxed">
+                            <strong>หายนะทั้งทางกฎหมายและครอบครัว:</strong> ธุรกรรมบนบล็อกเชนสามารถตรวจสอบย้อนหลังได้ (Traceable) เมื่อตรวจสอบประวัติการเข้าใช้งานคอมพิวเตอร์และเส้นทางการโอนเหรียญ ลูกชายคนโตจะถูกดำเนินคดีฐานยักย้ายปิดบังทรัพย์มรดก ซึ่งตาม <strong>ป.พ.พ. มาตรา 1605</strong> ส่งผลให้ <em>ถูกกำจัดมิให้รับมรดกของคุณปู่เลยแม้แต่บาทเดียว</em> และทำลายความสัมพันธ์พี่น้องอย่างไม่อาจฟื้นฟูได้
+                        </p>
+                    </div>
+                    ` : ''}
+
+                    ${appState.caseDecision === 'cooperate' ? `
+                    <div class="p-5 rounded-2xl bg-emerald-500/20 border border-emerald-400/50 text-sm space-y-2 page-fade">
+                        <h3 class="font-bold text-emerald-200 text-base">✅ ผลลัพธ์ของการตัดสินใจ (ทางเลือกที่ 2 : เคารพเจตนารมณ์และทำสัญญาแบ่งมรดก)</h3>
+                        <p class="text-slate-100 leading-relaxed">
+                            <strong>ทางออกที่งดงามและถูกต้องตามกฎหมาย:</strong> แม้พินัยกรรมไฟล์ PDF จะใช้บังคับไม่ได้โดยตรง แต่เมื่อทายาทโดยธรรมทั้งสองคน (พี่ชายและน้องสาว) ตกลงยินยอมร่วมกัน สามารถทำ <strong>สัญญาแบ่งปันทรัพย์มรดก (ป.พ.พ. มาตรา 1750)</strong> ต่อหน้าทนายความเพื่อโอนบ้านให้พี่ชายและโอนคริปโทฯ ให้น้องสาวตามเจตนาของคุณปู่ได้สมบูรณ์ตามกฎหมาย
+                        </p>
+                    </div>
+                    ` : ''}
+                </section>
+
+                <!-- วิเคราะห์เหตุการณ์ครบ 3 มิติ -->
+                <section class="space-y-4">
+                    <h2 class="text-xl font-bold text-navy-900">วิเคราะห์กรณีศึกษาครบทั้ง 3 มิติ</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-amber-500 border-x border-b border-slate-200 space-y-2">
+                            <h3 class="font-bold text-navy-900 text-base">1. มิติกฎหมาย (Law)</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                ไฟล์ PDF แปะรูปลายเซ็นตกเป็น <strong>โมฆะตาม ป.พ.พ. มาตรา 1656</strong> และไม่ได้รับการรับรองตาม พ.ร.บ. ธุรกรรมอิเล็กทรอนิกส์ฯ มาตรา 3 ทรัพย์สินทั้งหมดจึงกลายเป็นมรดกที่ตกแก่ทายาทโดยธรรมลำดับที่ 1 (ลูกทั้งสองคนคนละครึ่ง) เว้นแต่ทายาททั้งสองจะตกลงทำสัญญาแบ่งปันมรดกตามเจตนาเดิมของคุณปู่
+                            </p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-emerald-600 border-x border-b border-slate-200 space-y-2">
+                            <h3 class="font-bold text-navy-900 text-base">2. มิติจริยธรรม (Ethics)</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                แม้กฎหมายจะเปิดช่องให้ลูกชายคนโตเรียกร้องแบ่งบ้านและคริปโทฯ คนละครึ่งได้ แต่ในทางจริยธรรม <strong>"เจตนารมณ์สุดท้ายของผู้วายชนม์"</strong> และ <strong>"ความซื่อสัตย์ต่อสายเลือด"</strong> มีคุณค่าเหนือกว่าผลประโยชน์ทางวัตถุ การเคารพความตั้งใจของคุณปู่คือการแสดงความกตัญญูและรักษาความสามัคคีในครอบครัว
+                            </p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-navy-800 border-x border-b border-slate-200 space-y-2">
+                            <h3 class="font-bold text-navy-900 text-base">3. มิติความปลอดภัย (Security)</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                คุณปู่สมชายมีความเสี่ยง 2 จุด คือ (1) เก็บไฟล์ PDF พินัยกรรมไว้บนคลาวด์โดยไม่เข้ารหัส (เสี่ยงถูกแอบแก้ไข) และ (2) จด Seed Phrase ไว้ในลิ้นชักที่ใครก็เปิดอ่านได้ ควรเก็บ Seed Phrase ในที่ปลอดภัยสูงและระบุพิกัดการเข้าถึงไว้ในพินัยกรรมฉบับกระดาษที่ปิดผนึกอย่างมิดชิด
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- วิธีรับมือพร้อมเหตุผล -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+                    <h2 class="text-xl font-bold text-navy-900">สรุปวิธีรับมือและป้องกันไม่ให้เกิดปัญหาซ้ำรอย (พร้อมเหตุผล)</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="p-5 rounded-2xl bg-cream-100/80 border border-amber-200/80 space-y-2">
+                            <h3 class="font-bold text-navy-900 text-base">1. แยก "พินัยกรรมกระดาษ" ออกจาก "รหัสผ่านดิจิทัล"</h3>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                <strong>วิธีปฏิบัติ:</strong> พิมพ์พินัยกรรมลงกระดาษและลงนามต่อหน้าพยาน 2 คนตามกฎหมาย โดยระบุแค่ว่ามีบัญชีคริปโทฯ อยู่ที่ใด แต่ <em>ห้ามเขียน Seed Phrase ลงในพินัยกรรมโดยตรง</em> (เพราะพินัยกรรมต้องถูกเปิดอ่านต่อหน้าพยานและศาล) ให้แยกเก็บ Seed Phrase ไว้ในตู้นิรภัยแทน <strong>(เหตุผล: เพื่อให้มีผลสมบูรณ์ตามกฎหมายและป้องกันรหัสผ่านรั่วไหลระหว่างเปิดพินัยกรรม)</strong>
+                            </p>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-cream-100/80 border border-amber-200/80 space-y-2">
+                            <h3 class="font-bold text-navy-900 text-base">2. ยื่นคำร้องขอตั้งผู้จัดการมรดกและทำสัญญาแบ่งปันมรดก</h3>
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                <strong>วิธีปฏิบัติ:</strong> เมื่อพินัยกรรมดิจิทัลไม่สมบูรณ์ ทายาทควรร่วมกันยื่นคำร้องต่อศาลตั้งผู้จัดการมรดก และทำบันทึกข้อตกลงแบ่งปันทรัพย์สินเป็นลายลักษณ์อักษร <strong>(เหตุผล: เพื่อป้องกันข้อพิพาททางกฎหมายในอนาคตและทำให้การโอนกรรมสิทธิ์บ้านและที่ดินที่สำนักงานที่ดินดำเนินการได้ถูกต้อง)</strong>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            `;
+        }
+
+        // 6. แบบทดสอบ (#/quiz)
+        function renderQuizPage() {
+            const totalQuestions = QUIZ_QUESTIONS.length;
+            const answeredCount = Object.keys(appState.quizAnswers).length;
+            
+            // คำนวณคะแนนหากส่งคำตอบแล้ว
+            let score = 0;
+            if (appState.quizSubmitted) {
+                QUIZ_QUESTIONS.forEach((q, idx) => {
+                    if (appState.quizAnswers[idx] === q.correctIndex) {
+                        score++;
+                    }
+                });
+            }
+
+            // ประเมินระดับผลการทดสอบ
+            let badgeText = '';
+            let badgeColor = '';
+            if (appState.quizSubmitted) {
+                if (score >= 7) {
+                    badgeText = 'ยอดเยี่ยม! ผู้รอบรู้ด้านพินัยกรรม กฎหมายมรดก และความปลอดภัยดิจิทัล';
+                    badgeColor = 'bg-emerald-500 text-white';
+                } else if (score >= 5) {
+                    badgeText = 'ผ่านเกณฑ์! มีความเข้าใจพื้นฐานที่ดี ควรทบทวนข้อที่พลาดเพิ่มเติม';
+                    badgeColor = 'bg-amber-400 text-navy-950';
+                } else {
+                    badgeText = 'ควรทบทวนเนื้อหาทั้ง 3 มิติเพิ่มเติมเพื่อวางแผนจัดการมรดกได้อย่างถูกต้อง';
+                    badgeColor = 'bg-rose-500 text-white';
+                }
+            }
+
+            return `
+            <div class="page-fade space-y-8">
+                <div class="border-b border-amber-200/80 pb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-heading font-semibold">แบบทดสอบวัดความเข้าใจ (Interactive Quiz)</span>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-navy-900 mt-2">แบบทดสอบความรู้พินัยกรรม มรดก และความปลอดภัยดิจิทัล (8 ข้อ)</h1>
+                        <p class="text-slate-600 mt-1">ครอบคลุมทั้ง 3 มิติ (กฎหมาย จริยธรรม ความปลอดภัย) และมีคำถามวิเคราะห์สถานการณ์จำลอง 3 ข้อ</p>
+                    </div>
+                    <div class="text-sm font-heading font-semibold text-navy-900 bg-white px-4 py-2.5 rounded-xl border border-amber-200 shadow-sm shrink-0">
+                        ตอบแล้ว <span class="text-amber-600 font-bold">${answeredCount}</span> / ${totalQuestions} ข้อ
+                    </div>
+                </div>
+
+                ${appState.quizSubmitted ? `
+                <!-- แสดงผลคะแนนรวมเมื่อส่งคำตอบ -->
+                <div class="bg-gradient-to-r from-navy-900 to-navy-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 page-fade">
+                    <div class="space-y-2 text-center md:text-left">
+                        <span class="inline-block px-3.5 py-1 rounded-full text-xs font-heading font-bold ${badgeColor}">${badgeText}</span>
+                        <h2 class="text-2xl sm:text-3xl font-bold">คะแนนรวมของคุณ : <span class="text-amber-400">${score}</span> / ${totalQuestions} คะแนน</h2>
+                        <p class="text-sm text-slate-300">ตรวจสอบเฉลยและคำอธิบายหลักกฎหมาย/จริยธรรม/ความปลอดภัยรายข้อได้ที่ด้านล่าง</p>
+                    </div>
+                    <button onclick="resetQuiz()" class="px-6 py-3 rounded-xl bg-amber-400 text-navy-950 hover:bg-amber-300 font-heading font-bold shadow transition shrink-0">
+                        ทำแบบทดสอบใหม่อีกครั้ง
+                    </button>
+                </div>
+                ` : ''}
+
+                <!-- รายการคำถามทั้ง 8 ข้อ -->
+                <div class="space-y-6">
+                    ${QUIZ_QUESTIONS.map((q, qIdx) => {
+                        const userAnswer = appState.quizAnswers[qIdx];
+                        const isCorrect = userAnswer === q.correctIndex;
+
+                        return `
+                        <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border ${appState.quizSubmitted ? (isCorrect ? 'border-emerald-400' : 'border-rose-400') : 'border-slate-200'} space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-3 py-1 rounded-lg bg-navy-900 text-amber-300 text-xs font-heading font-bold">ข้อที่ ${q.id}</span>
+                                    <span class="px-2.5 py-1 rounded-lg ${q.isScenario ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-700'} text-xs font-semibold">${q.category}</span>
+                                </div>
+                                ${appState.quizSubmitted ? `
+                                    <span class="text-xs font-heading font-bold px-3 py-1 rounded-full ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                                        ${isCorrect ? '✓ ตอบถูกต้อง (+1 คะแนน)' : '✕ ตอบไม่ถูกต้อง'}
+                                    </span>
+                                ` : ''}
+                            </div>
+
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">${q.question}</h3>
+
+                            <div class="space-y-2.5">
+                                ${q.options.map((opt, optIdx) => {
+                                    let optionClass = 'border-slate-200 hover:border-amber-400 hover:bg-cream-50';
+                                    let indicator = `<span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-xs font-bold shrink-0">${['ก', 'ข', 'ค', 'ง'][optIdx]}</span>`;
+
+                                    if (!appState.quizSubmitted) {
+                                        if (userAnswer === optIdx) {
+                                            optionClass = 'border-amber-500 bg-amber-50/80 ring-1 ring-amber-500';
+                                            indicator = `<span class="w-6 h-6 rounded-full bg-amber-500 text-navy-950 flex items-center justify-center text-xs font-bold shrink-0">${['ก', 'ข', 'ค', 'ง'][optIdx]}</span>`;
+                                        }
+                                    } else {
+                                        if (optIdx === q.correctIndex) {
+                                            optionClass = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-medium';
+                                            indicator = `<span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0">✓</span>`;
+                                        } else if (userAnswer === optIdx && optIdx !== q.correctIndex) {
+                                            optionClass = 'border-rose-400 bg-rose-50 text-rose-950';
+                                            indicator = `<span class="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">✕</span>`;
+                                        } else {
+                                            optionClass = 'border-slate-200 opacity-60';
+                                        }
+                                    }
+
+                                    return `
+                                    <button type="button" ${appState.quizSubmitted ? 'disabled' : ''} onclick="selectQuizOption(${qIdx}, ${optIdx})" class="w-full text-left p-3.5 sm:p-4 rounded-xl border transition flex items-start space-x-3 ${optionClass}">
+                                        ${indicator}
+                                        <span class="text-sm sm:text-base leading-relaxed">${opt}</span>
+                                    </button>
+                                    `;
+                                }).join('')}
+                            </div>
+
+                            ${appState.quizSubmitted ? `
+                            <div class="p-4 rounded-2xl bg-cream-100 border border-amber-200 text-sm space-y-1">
+                                <span class="font-bold text-navy-900 block">💡 คำอธิบายเฉลยละเอียด:</span>
+                                <p class="text-slate-700 leading-relaxed">${q.explanation}</p>
+                            </div>
+                            ` : ''}
+                        </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <!-- ปุ่มส่งคำตอบ -->
+                ${!appState.quizSubmitted ? `
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-amber-200 shadow-sm">
+                    <p class="text-sm text-slate-600">กรุณาเลือกคำตอบให้ครบทั้ง 8 ข้อก่อนกดส่งเพื่อตรวจคะแนนและดูเฉลยละเอียดรายข้อ</p>
+                    <button onclick="submitQuiz()" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-navy-900 to-navy-800 hover:from-navy-800 hover:to-navy-700 text-amber-300 font-heading font-bold shadow-lg transition">
+                        ส่งคำตอบและตรวจคะแนน
+                    </button>
+                </div>
+                ` : ''}
+            </div>
+            `;
+        }
+
+        // 7. แหล่งอ้างอิงและผู้จัดทำ (#/about)
+        function renderAboutPage() {
+            const references = [
+                {
+                    type: 'แหล่งอ้างอิงทางการ (หน่วยงานรัฐ)',
+                    title: 'ประมวลกฎหมายแพ่งและพาณิชย์ บรรพ 6 ว่าด้วยมรดก (มาตรา 1599 - 1755)',
+                    org: 'สำนักงานคณะกรรมการกฤษฎีกา',
+                    url: 'https://www.krisdika.go.th/'
+                },
+                {
+                    type: 'แหล่งอ้างอิงทางการ (หน่วยงานรัฐ)',
+                    title: 'พระราชบัญญัติว่าด้วยธุรกรรมทางอิเล็กทรอนิกส์ พ.ศ. 2544 และที่แก้ไขเพิ่มเติม (ข้อยกเว้นเรื่องครอบครัวและมรดก)',
+                    org: 'สำนักงานพัฒนาธุรกรรมทางอิเล็กทรอนิกส์ (ETDA)',
+                    url: 'https://www.etda.or.th/'
+                },
+                {
+                    type: 'แหล่งอ้างอิงทางการ (หน่วยงานรัฐ)',
+                    title: 'พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) และแนวปฏิบัติการคุ้มครองข้อมูลส่วนบุคคล',
+                    org: 'สำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล (สคส. / PDPC)',
+                    url: 'https://www.pdpc.or.th/'
+                },
+                {
+                    type: 'แหล่งอ้างอิงทางการ (หน่วยงานรัฐ)',
+                    title: 'คู่มือประชาชนเรื่องการจัดการมรดก การทำพินัยกรรม และการยื่นคำร้องขอตั้งผู้จัดการมรดก',
+                    org: 'สำนักงานกิจการยุติธรรม กระทรวงยุติธรรม / สำนักงานศาลยุติธรรม',
+                    url: 'https://www.moj.go.th/'
+                },
+                {
+                    type: 'แหล่งอ้างอิงด้านความปลอดภัยไซเบอร์',
+                    title: 'แนวทางการเก็บรักษารหัสผ่าน การยืนยันตัวตนแบบสองชั้น (2FA) และการป้องกันภัยฟิชชิ่ง',
+                    org: 'สำนักงานคณะกรรมการการรักษาความมั่นคงปลอดภัยไซเบอร์แห่งชาติ (สกมช. / NCSA)',
+                    url: 'https://www.ncsa.or.th/'
+                }
+            ];
+
+            return `
+            <div class="page-fade space-y-8">
+                <div class="border-b border-amber-200/80 pb-6">
+                    <span class="px-3 py-1 rounded-full bg-navy-900 text-amber-300 text-xs font-heading font-semibold">ข้อมูลโครงการและบรรณานุกรม</span>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-navy-900 mt-2">แหล่งอ้างอิง เครดิตสื่อ และคณะผู้จัดทำโครงการ</h1>
+                    <p class="text-slate-600 mt-1">รวบรวมแหล่งอ้างอิงทางกฎหมายและหน่วยงานทางการที่น่าเชื่อถือ พร้อมข้อมูลคณะผู้จัดทำโครงการ</p>
+                </div>
+
+                <!-- ข้อมูลผู้จัดทำโครงการ -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-amber-200/80 space-y-6">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <h2 class="text-xl font-bold text-navy-900">ข้อมูลคณะผู้จัดทำโครงการ</h2>
+                            <p class="text-sm text-slate-500">รายวิชา กฎหมาย จริยธรรมและการจัดการความปลอดภัยของข้อมูลทางดิจิทัล</p>
+                        </div>
+                        <span class="px-3.5 py-1.5 rounded-xl bg-amber-100 text-amber-900 text-xs font-heading font-semibold">โครงการ: พินัยกรรมเข้าใจง่าย (EasyWill TH)</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 bg-cream-100/80 p-6 rounded-2xl border border-amber-200/70">
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-500 block">ชื่อเว็บแอปพลิเคชัน / โครงการ:</span>
+                                <p class="font-heading font-bold text-navy-900 text-lg">พินัยกรรมเข้าใจง่าย (EasyWill TH)</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-500 block mb-1.5">รายชื่อผู้จัดทำ:</span>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center space-x-2.5 bg-white px-4 py-2.5 rounded-xl border border-amber-200/60 shadow-xs">
+                                        <span class="w-6 h-6 rounded-full bg-navy-900 text-amber-300 text-xs font-bold flex items-center justify-center">1</span>
+                                        <span class="font-heading font-semibold text-navy-900 text-base">${escapeHTML(appState.authorInfo.author1)}</span>
+                                    </li>
+                                    <li class="flex items-center space-x-2.5 bg-white px-4 py-2.5 rounded-xl border border-amber-200/60 shadow-xs">
+                                        <span class="w-6 h-6 rounded-full bg-navy-900 text-amber-300 text-xs font-bold flex items-center justify-center">2</span>
+                                        <span class="font-heading font-semibold text-navy-900 text-base">${escapeHTML(appState.authorInfo.author2)}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-500 block">วันกำหนดส่ง:</span>
+                                <p class="font-medium text-navy-900 text-sm mt-0.5">${escapeHTML(appState.authorInfo.dueDate)}</p>
+                            </div>
+                        </div>
+
+                        <!-- ฟอร์มแก้ไขวันกำหนดส่ง -->
+                        <form onsubmit="saveDueDateInfo(event)" class="space-y-3 border-t md:border-t-0 md:border-l border-amber-200 pt-4 md:pt-0 md:pl-6 flex flex-col justify-center">
+                            <p class="text-sm font-bold text-navy-900">ตั้งค่าวันกำหนดส่งใบงาน:</p>
+                            <p class="text-xs text-slate-600">สามารถปรับแก้ไขวันที่กำหนดส่งงานให้ตรงกับตารางเรียนได้ทันที</p>
+                            <div>
+                                <label for="input-due-date" class="block text-xs font-semibold text-slate-700 mb-1">วันกำหนดส่ง</label>
+                                <input id="input-due-date" type="text" value="${escapeHTML(appState.authorInfo.dueDate)}" required class="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-sm focus:outline-none focus:border-amber-500">
+                            </div>
+                            <button type="submit" class="self-start px-5 py-2.5 rounded-xl bg-navy-900 hover:bg-navy-800 text-amber-300 text-xs font-heading font-semibold transition shadow-sm">
+                                บันทึกวันกำหนดส่ง
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- แหล่งอ้างอิง 5 แหล่ง -->
+                <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-5">
+                    <div>
+                        <h2 class="text-xl font-bold text-navy-900">แหล่งข้อมูลอ้างอิง (5 แหล่งข้อมูลหลัก)</h2>
+                        <p class="text-sm text-slate-500">รวบรวมจากหน่วยงานภาครัฐและองค์กรด้านกฎหมายและความปลอดภัยไซเบอร์ของประเทศไทย</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        ${references.map((ref, index) => `
+                        <div class="p-4 rounded-2xl bg-cream-50 border border-slate-200 hover:border-amber-400 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-semibold ${index < 4 ? 'bg-amber-100 text-amber-900' : 'bg-sky-100 text-sky-900'}">${ref.type}</span>
+                                <h3 class="font-bold text-navy-900 text-sm sm:text-base">${index + 1}. ${ref.title}</h3>
+                                <p class="text-xs text-slate-600">หน่วยงาน: <strong>${ref.org}</strong></p>
+                            </div>
+                            <a href="${ref.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-white border border-slate-300 hover:border-amber-500 text-navy-900 text-xs font-heading font-semibold shrink-0 transition">
+                                <span>เปิดเว็บไซต์อ้างอิง</span>
+                                <svg class="w-3.5 h-3.5 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        </div>
+                        `).join('')}
+                    </div>
+                </section>
+
+                <!-- เครดิตสื่อและเครื่องมือพัฒนา -->
+                <section class="bg-navy-900 text-slate-200 rounded-3xl p-6 sm:p-8 shadow-md space-y-3">
+                    <h2 class="text-lg font-bold text-amber-300">เครดิตสื่อและเครื่องมือที่ใช้ในการพัฒนาเว็บแอปพลิเคชัน</h2>
+                    <ul class="text-sm text-slate-300 space-y-1.5 list-disc pl-5">
+                        <li><strong>แบบอักษร (Typography):</strong> ฟอนต์ภาษาไทย <em>Prompt</em> และ <em>Sarabun</em> จาก Google Fonts (SIL Open Font License)</li>
+                        <li><strong>ไอคอนและภาพประกอบเวกเตอร์ (Icons & Vector Graphics):</strong> ออกแบบด้วย Inline SVG และ Heroicons (MIT License)</li>
+                        <li><strong>เฟรมเวิร์กการจัดหน้า (CSS Framework):</strong> Tailwind CSS สำหรับการออกแบบ Responsive Web Design รองรับทั้งมือถือและคอมพิวเตอร์</li>
+                        <li><strong>สถาปัตยกรรมเว็บแอปพลิเคชัน:</strong> Single-Page Application (SPA) ด้วย HTML5, Vanilla JavaScript และระบบ URL Hash Routing</li>
+                    </ul>
+                </section>
+            </div>
+            `;
+        }
+
+        /**
+         * =========================================================================
+         * ฟังก์ชันจัดการเหตุการณ์ Interactive (Event Handlers)
+         * =========================================================================
+         */
+
+        // ป้องกัน XSS เมื่อแสดงข้อความที่ผู้ใช้กรอก
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag]));
+        }
+
+        // สลับแท็บในหน้าจริยธรรม (รองรับทั้ง 2 ประเด็น)
+        window.setEthicsTab = function(issueNum, tabName) {
+            if (issueNum === 1) {
+                appState.ethicsIssue1Tab = tabName;
+            } else if (issueNum === 2) {
+                appState.ethicsIssue2Tab = tabName;
+            }
+            renderCurrentRoute(false);
+        };
+
+        // เลือกการตัดสินใจในหน้ากรณีศึกษา
+        window.setCaseDecision = function(decision) {
+            appState.caseDecision = decision;
+            renderCurrentRoute(false);
+            showToast('บันทึกการตัดสินใจของคุณแล้ว ดูบทวิเคราะห์ด้านล่าง');
+        };
+
+        // เลือกตัวเลือกในแบบทดสอบ
+        window.selectQuizOption = function(questionIndex, optionIndex) {
+            if (appState.quizSubmitted) return;
+            appState.quizAnswers[questionIndex] = optionIndex;
+            renderCurrentRoute(false);
+        };
+
+        // ส่งคำตอบแบบทดสอบ
+        window.submitQuiz = function() {
+            const total = QUIZ_QUESTIONS.length;
+            const answered = Object.keys(appState.quizAnswers).length;
+            if (answered < total) {
+                showToast(`กรุณาตอบคำถามให้ครบทั้ง ${total} ข้อ (ยังขาดอีก ${total - answered} ข้อ)`);
+                return;
+            }
+            appState.quizSubmitted = true;
+            renderCurrentRoute(true);
+            showToast('ตรวจคำตอบเรียบร้อยแล้ว!');
+        };
+
+        // รีเซ็ตแบบทดสอบ
+        window.resetQuiz = function() {
+            appState.quizAnswers = {};
+            appState.quizSubmitted = false;
+            renderCurrentRoute(true);
+            showToast('เริ่มทำแบบทดสอบใหม่');
+        };
+
+        // บันทึกวันกำหนดส่งในหน้า About
+        window.saveDueDateInfo = function(event) {
+            event.preventDefault();
+            const dateInput = document.getElementById('input-due-date');
+            if (!dateInput) return;
+
+            appState.authorInfo.dueDate = dateInput.value.trim();
+
+            try {
+                localStorage.setItem('easywill_author_info', JSON.stringify({ dueDate: appState.authorInfo.dueDate }));
+            } catch (e) {
+                console.warn('ไม่สามารถบันทึกข้อมูลลง LocalStorage ได้');
+            }
+
+            updateFooterAuthor();
+            renderCurrentRoute(false);
+            showToast('บันทึกวันกำหนดส่งเรียบร้อยแล้ว');
+        };
+
+        function updateFooterAuthor() {
+            const footerDisplay = document.getElementById('footer-author-display');
+            if (footerDisplay) {
+                footerDisplay.textContent = `จัดทำโดย: ${appState.authorInfo.author1} และ ${appState.authorInfo.author2} | กำหนดส่ง: ${appState.authorInfo.dueDate}`;
+            }
+        }
+
+        /**
+         * =========================================================================
+         * ระบบจัดการ URL Hash Routing และการเรนเดอร์หน้าเว็บ
+         * =========================================================================
+         */
+
+        function getCurrentRouteIndex() {
+            const hash = window.location.hash || '#/home';
+            const index = ROUTES.findIndex(r => r.path === hash);
+            return index !== -1 ? index : 0;
+        }
+
+        function renderNavigation(activeIndex) {
+            const desktopNav = document.getElementById('desktop-nav');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const progressBar = document.getElementById('route-progress');
+            const progressLabel = document.getElementById('progress-label');
+            const progressPercent = document.getElementById('progress-percent');
+
+            if (desktopNav) {
+                desktopNav.innerHTML = ROUTES.map((route, idx) => {
+                    const isActive = idx === activeIndex;
+                    return `
+                    <a href="${route.path}" class="px-3.5 py-2 rounded-xl text-sm font-heading font-medium transition-all ${
+                        isActive 
+                        ? 'bg-amber-400 text-navy-950 font-bold shadow-sm' 
+                        : 'text-slate-200 hover:text-white hover:bg-navy-800'
+                    }">
+                        ${route.shortLabel}
+                    </a>
+                    `;
+                }).join('');
+            }
+
+            if (mobileMenu) {
+                mobileMenu.innerHTML = ROUTES.map((route, idx) => {
+                    const isActive = idx === activeIndex;
+                    return `
+                    <a href="${route.path}" onclick="closeMobileMenu()" class="block px-4 py-3 rounded-xl text-sm font-heading font-medium transition ${
+                        isActive 
+                        ? 'bg-amber-400 text-navy-950 font-bold' 
+                        : 'text-slate-200 hover:text-white hover:bg-navy-800'
+                    }">
+                        ${idx + 1}. ${route.label}
+                    </a>
+                    `;
+                }).join('');
+            }
+
+            const percentage = Math.round(((activeIndex + 1) / ROUTES.length) * 100);
+            if (progressBar) {
+                progressBar.style.width = `${percentage}%`;
+            }
+            if (progressLabel) {
+                progressLabel.textContent = `ความคืบหน้าการเรียนรู้: ${ROUTES[activeIndex].label} (${activeIndex + 1}/${ROUTES.length})`;
+            }
+            if (progressPercent) {
+                progressPercent.textContent = `${percentage}%`;
+            }
+        }
+
+        function renderPagination(activeIndex) {
+            const paginationContainer = document.getElementById('page-pagination');
+            if (!paginationContainer) return;
+
+            const prevRoute = activeIndex > 0 ? ROUTES[activeIndex - 1] : null;
+            const nextRoute = activeIndex < ROUTES.length - 1 ? ROUTES[activeIndex + 1] : null;
+
+            paginationContainer.innerHTML = `
+                <div class="w-full sm:w-auto">
+                    ${prevRoute ? `
+                    <a href="${prevRoute.path}" class="flex items-center justify-center sm:justify-start space-x-2 px-5 py-3 rounded-xl bg-white border border-slate-300 hover:border-navy-800 text-navy-900 text-sm font-heading font-semibold shadow-sm transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        <span>ก่อนหน้า: ${prevRoute.label}</span>
+                    </a>
+                    ` : '<div></div>'}
+                </div>
+
+                <div class="text-xs text-slate-500 font-heading">
+                    หน้า ${activeIndex + 1} จาก ${ROUTES.length}
+                </div>
+
+                <div class="w-full sm:w-auto">
+                    ${nextRoute ? `
+                    <a href="${nextRoute.path}" class="flex items-center justify-center sm:justify-end space-x-2 px-5 py-3 rounded-xl bg-navy-900 hover:bg-navy-800 text-amber-300 text-sm font-heading font-semibold shadow-sm transition">
+                        <span>ถัดไป: ${nextRoute.label}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    ` : `
+                    <a href="#/home" class="flex items-center justify-center sm:justify-end space-x-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-navy-950 text-sm font-heading font-bold shadow-sm transition">
+                        <span>กลับสู่หน้าแรก</span>
+                    </a>
+                    `}
+                </div>
+            `;
+        }
+
+        function renderCurrentRoute(scrollToTop = true) {
+            try {
+                // กำหนดค่าเริ่มต้นเป็น #/home หากยังไม่มี Hash
+                if (!window.location.hash) {
+                    window.history.replaceState(null, '', '#/home');
+                }
+
+                const activeIndex = getCurrentRouteIndex();
+                const currentRoute = ROUTES[activeIndex];
+                const appContainer = document.getElementById('app-content');
+
+                renderNavigation(activeIndex);
+                renderPagination(activeIndex);
+
+                if (appContainer) {
+                    switch (currentRoute.id) {
+                        case 'home':
+                            appContainer.innerHTML = renderHomePage();
+                            break;
+                        case 'law':
+                            appContainer.innerHTML = renderLawPage();
+                            break;
+                        case 'ethics':
+                            appContainer.innerHTML = renderEthicsPage();
+                            break;
+                        case 'security':
+                            appContainer.innerHTML = renderSecurityPage();
+                            break;
+                        case 'casestudy':
+                            appContainer.innerHTML = renderCaseStudyPage();
+                            break;
+                        case 'quiz':
+                            appContainer.innerHTML = renderQuizPage();
+                            break;
+                        case 'about':
+                            appContainer.innerHTML = renderAboutPage();
+                            break;
+                        default:
+                            appContainer.innerHTML = renderHomePage();
+                    }
+                }
+
+                if (scrollToTop) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('เกิดข้อผิดพลาดในการแสดงผลหน้าเว็บ:', error);
+            }
+        }
+
+        // ควบคุมการเปิด-ปิดเมนูบนมือถือ
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('menu-icon-open');
+            const closeIcon = document.getElementById('menu-icon-close');
+            const btn = document.getElementById('mobile-menu-btn');
+
+            if (!mobileMenu) return;
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                openIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+            } else {
+                closeMobileMenu();
+            }
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('menu-icon-open');
+            const closeIcon = document.getElementById('menu-icon-close');
+            const btn = document.getElementById('mobile-menu-btn');
+
+            if (mobileMenu) mobileMenu.classList.add('hidden');
+            if (openIcon) openIcon.classList.remove('hidden');
+            if (closeIcon) closeIcon.classList.add('hidden');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+
+        // เริ่มต้นการทำงานเมื่อโหลดหน้าเว็บเสร็จสมบูรณ์
+        window.addEventListener('DOMContentLoaded', () => {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', toggleMobileMenu);
+            }
+            updateFooterAuthor();
+            renderCurrentRoute(false);
+        });
+
+        // ตรวจจับการเปลี่ยนแปลง URL Hash เพื่อเปลี่ยนหน้า
+        window.addEventListener('hashchange', () => {
+            renderCurrentRoute(true);
+        });
+    </script>
+</body>
+</html>

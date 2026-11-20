@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Business Legal Check - ระบบประเมินความเสี่ยงกฎหมายธุรกิจดิจิทัล</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #011638;
+            --charcoal: #364156;
+            --silver: #CDCDCD;
+            --mint: #DFF8EB;
+            --hunter: #214E34;
+            --white: #FFFFFF;
+            --warning: #D97706;
+            --danger: #B91C1C;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        body {
+            background-color: var(--mint);
+            color: var(--navy);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 4px 6px rgba(1, 22, 56, 0.15);
+        }
+
+        .brand h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .brand p {
+            font-size: 0.85rem;
+            color: var(--mint);
+            opacity: 0.9;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--hunter);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #183a26;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--charcoal);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background-color: #273040;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1.5px solid var(--mint);
+            color: var(--mint);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--mint);
+            color: var(--navy);
+        }
+
+        .btn-outline-dark {
+            background-color: var(--white);
+            border: 1.5px solid var(--charcoal);
+            color: var(--charcoal);
+        }
+
+        .btn-outline-dark:hover {
+            background-color: var(--charcoal);
+            color: var(--white);
+        }
+
+        /* Container */
+        main {
+            flex: 1;
+            max-width: 1000px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Section Views */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner */
+        .hero-box {
+            background-color: var(--white);
+            border: 1px solid var(--silver);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(1, 22, 56, 0.05);
+        }
+
+        .hero-box h2 {
+            color: var(--navy);
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-box p {
+            color: var(--charcoal);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Case Cards Grid */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .case-card {
+            background-color: var(--white);
+            border: 1px solid var(--silver);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .case-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(1, 22, 56, 0.1);
+            border-color: var(--hunter);
+        }
+
+        .case-badge {
+            display: inline-block;
+            background-color: var(--mint);
+            color: var(--hunter);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+
+        .case-card h3 {
+            color: var(--navy);
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .case-card p {
+            color: var(--charcoal);
+            font-size: 0.92rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Assessment Card */
+        .card-panel {
+            background-color: var(--white);
+            border: 1px solid var(--silver);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(1, 22, 56, 0.06);
+        }
+
+        .panel-header {
+            border-bottom: 1px solid var(--silver);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .question-item {
+            background-color: #F8FAFC;
+            border: 1px solid var(--silver);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .question-title {
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            color: var(--charcoal);
+            transition: background 0.15s;
+        }
+
+        .radio-label:hover {
+            background-color: var(--mint);
+        }
+
+        .radio-label input[type="radio"] {
+            accent-color: var(--hunter);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Result Dashboard */
+        .risk-meter-box {
+            background-color: var(--mint);
+            border: 1px solid var(--hunter);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 22px;
+            background-color: var(--silver);
+            border-radius: 11px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s ease;
+            border-radius: 11px;
+        }
+
+        .law-box {
+            border-left: 4px solid var(--navy);
+            background-color: #F8FAFC;
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .law-box h4 {
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .law-box ul {
+            margin-left: 1.25rem;
+            color: var(--charcoal);
+            margin-bottom: 0.75rem;
+        }
+
+        .law-box li {
+            margin-bottom: 0.4rem;
+        }
+
+        .template-box {
+            background-color: var(--navy);
+            color: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--charcoal);
+            padding-bottom: 0.75rem;
+        }
+
+        .template-content {
+            background-color: var(--charcoal);
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            white-space: pre-line;
+            color: var(--mint);
+        }
+
+        /* Modal (Glossary) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(1, 22, 56, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--white);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .glossary-item {
+            border-bottom: 1px solid var(--silver);
+            padding: 0.85rem 0;
+        }
+
+        .glossary-item:last-child {
+            border-bottom: none;
+        }
+
+        .glossary-term {
+            font-weight: 700;
+            color: var(--hunter);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy);
+            color: var(--silver);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+
+        footer strong {
+            color: var(--mint);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: var(--white);
+            }
+            header, .no-print, footer {
+                display: none !important;
+            }
+            main {
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            .card-panel {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            .template-box {
+                background-color: #F1F5F9 !important;
+                color: var(--navy) !important;
+                border: 1px solid var(--silver);
+            }
+            .template-content {
+                background-color: var(--white) !important;
+                color: var(--navy) !important;
+                border: 1px solid var(--silver);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <h1>⚖️ Digital Business Legal Check</h1>
+            <p>ระบบประเมินความเสี่ยงและให้คำปรึกษาข้อกฎหมายเบื้องต้นสำหรับธุรกิจดิจิทัล</p>
+        </div>
+        <div class="header-actions no-print">
+            <button class="btn btn-outline" onclick="toggleGlossary(true)">📖 พจนานุกรมศัพท์กฎหมาย</button>
+            <button class="btn btn-primary" onclick="goHome()">🏠 หน้าหลัก</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- VIEW 1: HOME (เลือกกรณีศึกษา) -->
+        <section id="view-home" class="view-section active">
+            <div class="hero-box">
+                <h2>ตรวจสอบความพร้อมทางกฎหมายก่อนเริ่มทำธุรกิจดิจิทัล</h2>
+                <p>เลือกสถานการณ์ธุรกิจดิจิทัลที่ตรงกับรูปแบบการดำเนินงานของคุณ เพื่อทำแบบคัดกรองความเสี่ยง ตรวจสอบมาตราทางกฎหมายที่เกี่ยวข้อง และรับข้อความแม่แบบพร้อมใช้งานทันที</p>
+            </div>
+
+            <div class="cases-grid">
+                <!-- Case 1 -->
+                <div class="case-card">
+                    <div>
+                        <span class="case-badge">กรณีศึกษาที่ 1 • AI & Copyright</span>
+                        <h3>การใช้ AI สร้างคอนเทนต์และภาพโฆษณา</h3>
+                        <p>การเจนภาพพรีเซนเตอร์ด้วย AI ที่คล้ายบุคคลจริง หรือการนำผลงานศิลปะของผู้อื่นมาดัดแปลงเพื่อใช้โปรโมตสินค้าและขายในเชิงพาณิชย์</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="startCase(0)">เริ่มประเมินกรณีนี้ →</button>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="case-card">
+                    <div>
+                        <span class="case-badge">กรณีศึกษาที่ 2 • Consumer & Ads</span>
+                        <h3>Affiliate Marketing และการจ้างรีวิวสินค้า</h3>
+                        <p>การจ้างอินฟลูเอนเซอร์รีวิวสินค้าโดยไม่ระบุว่าเป็นโฆษณาแฝง หรือการกล่าวอ้างสรรพคุณเกินจริงผ่านสื่อออนไลน์</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="startCase(1)">เริ่มประเมินกรณีนี้ →</button>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="case-card">
+                    <div>
+                        <span class="case-badge">กรณีศึกษาที่ 3 • PDPA Compliance</span>
+                        <h3>การเก็บข้อมูลลูกค้าผ่าน Line OA / เว็บไซต์</h3>
+                        <p>การขอข้อมูลส่วนบุคคล (เบอร์โทร วันเกิด อีเมล) เพื่อสมัครสมาชิกหรือแลกส่วนลด และการนำไปส่งข้อความโฆษณาต่อ</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="startCase(2)">เริ่มประเมินกรณีนี้ →</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: ASSESSMENT (แบบคัดกรองความเสี่ยง) -->
+        <section id="view-quiz" class="view-section">
+            <div class="card-panel">
+                <div class="panel-header">
+                    <div>
+                        <span id="quiz-badge" class="case-badge">กรณีศึกษา</span>
+                        <h2 id="quiz-title" style="color: var(--navy); font-size: 1.35rem;">หัวข้อกรณีศึกษา</h2>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary" onclick="fillDemoData()">⚡ กรอกข้อมูลตัวอย่าง (Demo)</button>
+                        <button class="btn btn-outline-dark" onclick="goHome()">ยกเลิก</button>
+                    </div>
+                </div>
+
+                <form id="quiz-form">
+                    <div id="questions-container"></div>
+                    <div style="margin-top: 1.5rem; text-align: right;">
+                        <button type="button" class="btn btn-primary" style="font-size: 1.05rem; padding: 0.8rem 1.8rem;" onclick="evaluateResult()">📊 ประมวลผลความเสี่ยงทางกฎหมาย</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- VIEW 3: RESULT DASHBOARD (หน้าแสดงผลลัพธ์) -->
+        <section id="view-result" class="view-section">
+            <div class="card-panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="case-badge">รายงานผลการประเมินเบื้องต้น</span>
+                        <h2 id="result-case-title" style="color: var(--navy); font-size: 1.35rem;">ชื่อกรณีศึกษา</h2>
+                    </div>
+                    <div class="no-print" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="window.print()">🖨️ พิมพ์ / บันทึก PDF</button>
+                        <button class="btn btn-outline-dark" onclick="goHome()">ประเมินกรณีอื่น</button>
+                    </div>
+                </div>
+
+                <!-- Visual Risk Meter -->
+                <div class="risk-meter-box" id="meter-container">
+                    <div class="meter-header">
+                        <span id="risk-status-text">ระดับความพร้อมทางกฎหมาย: -</span>
+                        <span id="risk-score-text">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="risk-progress-bar"></div>
+                    </div>
+                    <p id="risk-summary-desc" style="font-size: 0.95rem; color: var(--navy);"></p>
+                </div>
+
+                <!-- Legal Details & Citations -->
+                <div class="law-box">
+                    <h4>📚 ข้อกฎหมายและมาตราที่เกี่ยวข้อง</h4>
+                    <ul id="legal-articles-list"></ul>
+                    <div id="legal-advice-detail" style="margin-top: 0.75rem; color: var(--navy); font-weight: 500;"></div>
+                    <div style="margin-top: 1rem;">
+                        <a id="legal-ref-link" href="#" target="_blank" class="btn btn-secondary" style="font-size: 0.85rem;">🔗 ตรวจสอบตัวบทกฎหมายฉบับเต็ม (แหล่งอ้างอิงทางการ)</a>
+                    </div>
+                </div>
+
+                <!-- Copyable Template -->
+                <div class="template-box">
+                    <div class="template-header">
+                        <strong id="template-title">📄 ตัวอย่างข้อความแม่แบบทางกฎหมาย (พร้อมใช้งาน)</strong>
+                        <button class="btn btn-primary no-print" id="copy-btn" onclick="copyTemplateText()" style="padding: 0.4rem 0.9rem; font-size: 0.85rem;">📋 คัดลอกข้อความ</button>
+                    </div>
+                    <div class="template-content" id="template-body"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- GLOSSARY MODAL -->
+    <div class="modal-overlay" id="glossary-modal">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--silver); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                <h3 style="color: var(--navy);">📖 พจนานุกรมศัพท์กฎหมายธุรกิจดิจิทัล</h3>
+                <button class="btn btn-outline-dark" onclick="toggleGlossary(false)" style="padding: 0.3rem 0.7rem;">✕ ปิด</button>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">1. ผู้ควบคุมข้อมูลส่วนบุคคล (Data Controller)</div>
+                <p>บุคคลหรือนิติบุคคล (เช่น เจ้าของร้านค้าออนไลน์) ที่มีอำนาจตัดสินใจเกี่ยวกับการเก็บรวบรวม ใช้ หรือเปิดเผยข้อมูลส่วนบุคคลของลูกค้า</p>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">2. การใช้ลิขสิทธิ์ที่เป็นธรรม (Fair Use)</div>
+                <p>ข้อยกเว้นการละเมิดลิขสิทธิ์ตามกฎหมาย เช่น การนำมาใช้เพื่อการศึกษา วิจัย หรือติชมโดยไม่กระทบสิทธิของเจ้าของลิขสิทธิ์เกินสมควร (มักไม่ครอบคลุมการนำไปใช้โฆษณาขายสินค้า)</p>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">3. สิทธิในภาพลักษณ์บุคคล (Right of Publicity)</div>
+                <p>สิทธิของบุคคลในการควบคุมการนำชื่อ ใบหน้า หรืออัตลักษณ์ของตนเองไปใช้แสวงหาประโยชน์ในเชิงพาณิชย์ รวมถึงการใช้ AI สร้างภาพเลียนแบบบุคคลจริง</p>
+            </div>
+            <div class="glossary-item">
+                <div class="glossary-term">4. การโฆษณาแฝง (Hidden Advertising)</div>
+                <p>การรีวิวหรือแนะนำสินค้าโดยได้รับค่าตอบแทนหรือผลประโยชน์จากแบรนด์ แต่ทำให้ผู้บริโภคเข้าใจผิดว่าเป็นความเห็นส่วนตัวของผู้ใช้ทั่วไป</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Digital Business Legal Check</strong> | พัฒนาเพื่อการศึกษาด้านกฎหมายธุรกิจดิจิทัล</p>
+        <p style="margin-top: 0.3rem;">⚠️ หมายเหตุ: ผลการประเมินนี้เป็นคำแนะนำเบื้องต้นเพื่อการศึกษาเท่านั้น ไม่สามารถใช้แทนคำปรึกษาทางกฎหมายจากทนายความได้</p>
+    </footer>
+
+    <script>
+        const casesData = [
+            {
+                badge: "กรณีศึกษาที่ 1 • AI & Copyright",
+                title: "การใช้ AI สร้างคอนเทนต์และภาพโฆษณาในธุรกิจ",
+                questions: [
+                    {
+                        q: "1. ภาพหรือคอนเทนต์ที่สร้างจาก AI มีใบหน้าหรือเสียงคล้ายบุคคลจริง (เช่น ดารา อินฟลูเอนเซอร์) หรือไม่?",
+                        options: [
+                            { text: "ไม่มี เป็นภาพสมมติหรือกราฟิกทั่วไปที่ไม่ระบุตัวตนบุคคลใด", score: 35 },
+                            { text: "มีลักษณะคล้ายบุคคลจริง แต่ได้รับความยินยอมเป็นลายลักษณ์อักษรแล้ว", score: 35 },
+                            { text: "มีลักษณะคล้ายบุคคลจริง และนำมาใช้โดยไม่ได้ขออนุญาต", score: 0 }
+                        ]
+                    },
+                    {
+                        q: "2. ในการสั่งงาน AI (Prompt) คุณได้ใส่ชื่อศิลปินหรือนำภาพมีลิขสิทธิ์ของผู้อื่นมาดัดแปลงเพื่อใช้โฆษณาสินค้าหรือไม่?",
+                        options: [
+                            { text: "ไม่ได้ใช้ ใช้คำสั่งทั่วไปหรือใช้ภาพที่ธุรกิจสร้างขึ้นเอง", score: 35 },
+                            { text: "นำภาพคนอื่นมาดัดแปลง/เลียนแบบลายเส้นเพื่อใช้โปรโมตสินค้า", score: 0 }
+                        ]
+                    },
+                    {
+                        q: "3. คุณได้ตรวจสอบเงื่อนไขสิทธิ์การใช้งานเชิงพาณิชย์ (Commercial License) ของแพลตฟอร์ม AI ที่ใช้หรือไม่?",
+                        options: [
+                            { text: "ตรวจสอบแล้ว และใช้แพ็กเกจที่อนุญาตให้นำไปใช้เชิงพาณิชย์ได้", score: 30 },
+                            { text: "ใช้เวอร์ชันฟรีโดยไม่ได้ตรวจสอบสิทธิ์การใช้งานเชิงพาณิชย์", score: 10 }
+                        ]
+                    }
+                ],
+                articles: [
+                    "พ.ร.บ. ลิขสิทธิ์ พ.ศ. 2537 (และที่แก้ไขเพิ่มเติม) มาตรา 15 และ มาตรา 27: การทำซ้ำหรือดัดแปลงงานอันมีลิขสิทธิ์ของผู้อื่นเพื่อประโยชน์ทางการค้าโดยไม่ได้รับอนุญาต ถือเป็นการละเมิดลิขสิทธิ์",
+                    "ประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 420: การนำใบหน้าหรืออัตลักษณ์ของบุคคลอื่นไปสร้างด้วย AI เพื่อแสวงหาประโยชน์โดยมิชอบ อาจเข้าข่ายละเมิดสิทธิส่วนบุคคลและต้องชดใช้ค่าสินไหมทดแทน",
+                    "พ.ร.บ. ว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. 2560 มาตรา 16: การนำเข้าสู่ระบบคอมพิวเตอร์ซึ่งภาพตัดต่อหรือดัดแปลงที่ทำให้ผู้อื่นเสียชื่อเสียง ถูกดูหมิ่น หรืออับอาย"
+                ],
+                refUrl: "https://www.krisdika.go.th/web/guest/law",
+                templateTitle: "📄 ข้อความระบุการใช้สื่อที่สร้างโดย AI (AI Disclosure & Copyright Notice)",
+                templateText: "หมายเหตุ: ภาพประกอบโฆษณานี้สร้างขึ้นด้วยเทคโนโลยีปัญญาประดิษฐ์ (AI-Generated Content) เพื่อประกอบการสื่อสารทางการตลาดของ [ชื่อแบรนด์/ร้านค้า] เท่านั้น บุคคลและสถานที่ในภาพเป็นภาพจำลองที่ไม่ได้อ้างอิงถึงบุคคลจริงแต่อย่างใด สงวนลิขสิทธิ์ตามกฎหมาย"
+            },
+            {
+                badge: "กรณีศึกษาที่ 2 • Consumer & Ads",
+                title: "การทำ Affiliate Marketing และการจ้างรีวิวสินค้า",
+                questions: [
+                    {
+                        q: "1. โพสต์หรือคลิปวิดีโอรีวิวสินค้าที่มีการจ่ายค่าตอบแทนหรือให้ค่าคอมมิชชัน มีการระบุข้อความแจ้งผู้บริโภคหรือไม่?",
+                        options: [
+                            { text: "ระบุชัดเจน เช่น #โฆษณา #Sponsored หรือเปิดฟีเจอร์ Paid Partnership", score: 35 },
+                            { text: "ไม่ระบุ เพื่อให้ดูเหมือนผู้ใช้งานจริงมารีวิวเองตามธรรมชาติ", score: 0 }
+                        ]
+                    },
+                    {
+                        q: "2. ข้อความรีวิวมีการกล่าวอ้างสรรพคุณสินค้าเกินจริงหรือรับรองผล 100% หรือไม่? (เช่น ขาวทันทีใน 3 วัน, รักษาโรคหายขาด)",
+                        options: [
+                            { text: "ไม่มี อ้างอิงตามสรรพคุณจริงและข้อมูลที่ได้รับอนุญาตจาก อย./สคบ.", score: 35 },
+                            { text: "มีคำโฆษณาเกินจริงเพื่อกระตุ้นยอดขาย", score: 0 }
+                        ]
+                    },
+                    {
+                        q: "3. หากเป็นสินค้าควบคุม (เช่น เครื่องสำอาง อาหารเสริม) ได้มีการตรวจสอบเลขจดแจ้งและใบอนุญาตโฆษณาก่อนรีวิวหรือไม่?",
+                        options: [
+                            { text: "ตรวจสอบครบถ้วน และแสดงเลขจดแจ้งอย่างถูกต้อง", score: 30 },
+                            { text: "ไม่ได้ตรวจสอบ นำลิงก์สินค้ามาแปะขายทันที", score: 5 }
+                        ]
+                    }
+                ],
+                articles: [
+                    "พ.ร.บ. คุ้มครองผู้บริโภค พ.ศ. 2522 มาตรา 22: การโฆษณาจะต้องไม่ใช้ข้อความที่เป็นการไม่เป็นธรรมต่อผู้บริโภค หรือใช้ข้อความที่อาจก่อให้เกิดผลเสียต่อสังคม (เช่น การอ้างสรรพคุณเกินจริง หรือการโฆษณาแฝง)",
+                    "พ.ร.บ. อาหาร พ.ศ. 2522 มาตรา 40 และ 41 / พ.ร.บ. เครื่องสำอาง พ.ศ. 2558: ห้ามโฆษณาคุณประโยชน์ คุณภาพ หรือสรรพคุณอันเป็นเท็จหรือหลอกลวงให้หลงเชื่อ",
+                    "พ.ร.บ. ว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. 2560 มาตรา 14(1): การนำเข้าข้อมูลคอมพิวเตอร์อันเป็นเท็จ โดยประการที่น่าจะเกิดความเสียหายแก่ประชาชน"
+                ],
+                refUrl: "https://www.ocpb.go.th/",
+                templateTitle: "📄 ข้อความเปิดเผยการโฆษณาสำหรับอินฟลูเอนเซอร์ / Affiliate",
+                templateText: "[#โฆษณา #Sponsored] รีวิวนี้ได้รับการสนับสนุนจาก [ชื่อแบรนด์] ข้อมูลสรรพคุณสินค้าอ้างอิงตามรายละเอียดที่ได้รับการจดแจ้งอย่างถูกต้อง (เลขที่ อย./จดแจ้ง: XX-X-XXXXXXX) ผลลัพธ์ขึ้นอยู่กับสภาพร่างกายและการใช้งานของแต่ละบุคคล โปรดศึกษาข้อมูลก่อนตัดสินใจซื้อ"
+            },
+            {
+                badge: "กรณีศึกษาที่ 3 • PDPA Compliance",
+                title: "การเก็บข้อมูลลูกค้าผ่านระบบสมาชิก Line OA / เว็บไซต์",
+                questions: [
+                    {
+                        q: "1. คุณเก็บข้อมูลส่วนบุคคลของลูกค้าเฉพาะเท่าที่จำเป็นต่อวัตถุประสงค์การให้บริการหรือไม่?",
+                        options: [
+                            { text: "เก็บเฉพาะที่จำเป็น (เช่น ชื่อ เบอร์โทรสำหรับจัดส่งสินค้า)", score: 35 },
+                            { text: "บังคับเก็บข้อมูลเกินจำเป็น (เช่น ขอเลขบัตรประชาชน วันเกิด อาชีพ ทั้งที่แค่สมัครรับข่าวสาร)", score: 0 }
+                        ]
+                    },
+                    {
+                        q: "2. หากต้องการนำเบอร์โทรหรืออีเมลลูกค้าไปส่งโปรโมชันการตลาด (Direct Marketing) คุณได้ขอความยินยอมแยกส่วนหรือไม่?",
+                        options: [
+                            { text: "มีช่องติ๊กยินยอม (Opt-in Checkbox) แยกต่างหากอย่างชัดเจน และไม่บังคับติ๊ก", score: 35 },
+                            { text: "มัดรวมไปกับการสมัครสมาชิก หรือส่งข้อความโฆษณาทันทีโดยไม่ขออนุญาต", score: 0 }
+                        ]
+                    },
+                    {
+                        q: "3. หน้าเว็บไซต์หรือ Line OA ของคุณมีประกาศนโยบายความเป็นส่วนตัว (Privacy Notice) แจ้งสิทธิของลูกค้าหรือไม่?",
+                        options: [
+                            { text: "มีลิงก์ Privacy Notice แจ้งวัตถุประสงค์และช่องทางติดต่อขอถอนความยินยอมชัดเจน", score: 30 },
+                            { text: "ยังไม่มีประกาศนโยบายความเป็นส่วนตัว", score: 0 }
+                        ]
+                    }
+                ],
+                articles: [
+                    "พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) มาตรา 19: การขอความยินยอมต้องทำโดยชัดแจ้ง แยกส่วนออกจากข้อความอื่นอย่างชัดเจน และไม่เป็นการบังคับหรือหลอกลวง",
+                    "พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 มาตรา 22: การเก็บรวบรวมข้อมูลส่วนบุคคลให้เก็บได้เท่าที่จำเป็นภายใต้วัตถุประสงค์อันชอบด้วยกฎหมาย (Data Minimization)",
+                    "พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 มาตรา 23: ผู้ควบคุมข้อมูลต้องแจ้งรายละเอียดวัตถุประสงค์ ระยะเวลาจัดเก็บ และสิทธิของเจ้าของข้อมูลก่อนหรือขณะเก็บรวบรวม"
+                ],
+                refUrl: "https://www.pdpc.or.th/",
+                templateTitle: "📄 ข้อความขอความยินยอมการเก็บข้อมูลและส่งข่าวสารการตลาด (PDPA Consent)",
+                templateText: "[ชื่อร้านค้า/บริษัท] ขอเก็บรวบรวมข้อมูลส่วนบุคคลของท่าน (ชื่อ-นามสกุล, เบอร์โทรศัพท์) เพื่อใช้ในการยืนยันตัวตนสมาชิกและจัดส่งสินค้าตามนโยบายความเป็นส่วนตัว [แนบลิงก์ Privacy Notice]\n\n[ ] ข้าพเจ้ายินยอมให้ [ชื่อร้านค้า/บริษัท] ใช้ข้อมูลติดต่อเพื่อส่งข่าวสาร โปรโมชัน และสิทธิพิเศษทางการตลาด (ท่านสามารถยกเลิกความยินยอมได้ทุกเมื่อผ่านเมนูตั้งค่า)"
+            }
+        ];
+
+        let currentCaseIndex = 0;
+
+        function goHome() {
+            switchView('view-home');
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startCase(index) {
+            currentCaseIndex = index;
+            const data = casesData[index];
+            document.getElementById('quiz-badge').textContent = data.badge;
+            document.getElementById('quiz-title').textContent = data.title;
+
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            data.questions.forEach((item, qIdx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-item';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, oIdx) => {
+                    optionsHtml += `
+                        <label class="radio-label">
+                            <input type="radio" name="q_${qIdx}" value="${opt.score}">
+                            <span>${opt.text}</span>
+                        </label>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <div class="question-title">${item.q}</div>
+                    <div class="radio-group">${optionsHtml}</div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            switchView('view-quiz');
+        }
+
+        function fillDemoData() {
+            const data = casesData[currentCaseIndex];
+            data.questions.forEach((_, qIdx) => {
+                const radios = document.getElementsByName(`q_${qIdx}`);
+                if (radios.length > 0) {
+                    // เลือกตัวเลือกสุดท้ายเพื่อจำลองเคสที่มีความเสี่ยง (หรือสลับทดสอบได้)
+                    radios[radios.length - 1].checked = true;
+                }
+            });
+        }
+
+        function evaluateResult() {
+            const data = casesData[currentCaseIndex];
+            let totalScore = 0;
+            let answeredCount = 0;
+
+            data.questions.forEach((_, qIdx) => {
+                const selected = document.querySelector(`input[name="q_${qIdx}"]:checked`);
+                if (selected) {
+                    totalScore += parseInt(selected.value, 10);
+                    answeredCount++;
+                }
+            });
+
+            if (answeredCount < data.questions.length) {
+                alert('กรุณาตอบคำถามคัดกรองให้ครบทุกข้อก่อนประมวลผลครับ');
+                return;
+            }
+
+            // Update Result View
+            document.getElementById('result-case-title').textContent = data.title;
+            document.getElementById('risk-score-text').textContent = `ความพร้อม ${totalScore}%`;
+            
+            const progressBar = document.getElementById('risk-progress-bar');
+            const statusText = document.getElementById('risk-status-text');
+            const summaryDesc = document.getElementById('risk-summary-desc');
+            const meterContainer = document.getElementById('meter-container');
+
+            progressBar.style.width = `${totalScore}%`;
+
+            if (totalScore >= 80) {
+                progressBar.style.backgroundColor = 'var(--hunter)';
+                meterContainer.style.backgroundColor = 'var(--mint)';
+                meterContainer.style.borderColor = 'var(--hunter)';
+                statusText.style.color = 'var(--hunter)';
+                statusText.textContent = '🟢 ระดับความเสี่ยง: ต่ำ (ปฏิบัติสอดคล้องตามกฎหมาย)';
+                summaryDesc.textContent = 'ธุรกิจของคุณมีการดำเนินการที่คำนึงถึงข้อกฎหมายเบื้องต้นเป็นอย่างดี ควรเก็บรักษาหลักฐานความยินยอมและเอกสารอ้างอิงไว้อย่างเป็นระบบ';
+            } else if (totalScore >= 40) {
+                progressBar.style.backgroundColor = 'var(--warning)';
+                meterContainer.style.backgroundColor = '#FEF3C7';
+                meterContainer.style.borderColor = 'var(--warning)';
+                statusText.style.color = '#92400E';
+                statusText.textContent = '🟡 ระดับความเสี่ยง: ปานกลาง (ควรปรับปรุงแก้ไขบางส่วน)';
+                summaryDesc.textContent = 'มีบางขั้นตอนที่อาจเข้าข่ายสุ่มเสี่ยงต่อการละเมิดกฎหมาย ควรเพิ่มการแจ้งข้อมูลหรือขออนุญาตให้ชัดเจนก่อนเผยแพร่ในเชิงพาณิชย์';
+            } else {
+                progressBar.style.backgroundColor = 'var(--danger)';
+                meterContainer.style.backgroundColor = '#FEE2E2';
+                meterContainer.style.borderColor = 'var(--danger)';
+                statusText.style.color = 'var(--danger)';
+                statusText.textContent = '🔴 ระดับความเสี่ยง: สูง (เสี่ยงต่อการผิดกฎหมายโดยตรง)';
+                summaryDesc.textContent = 'การดำเนินการในลักษณะนี้มีความเสี่ยงสูงที่จะถูกฟ้องร้องหรือได้รับโทษปรับตามกฎหมาย แนะนำให้ระงับและปรับแก้ไขตามข้อแนะนำด้านล่างทันที';
+            }
+
+            // Populate Articles
+            const articlesList = document.getElementById('legal-articles-list');
+            articlesList.innerHTML = '';
+            data.articles.forEach(art => {
+                const li = document.createElement('li');
+                li.textContent = art;
+                articlesList.appendChild(li);
+            });
+
+            document.getElementById('legal-advice-detail').textContent = 
+                '💡 ข้อเสนอแนะเชิงปฏิบัติ: นำข้อความแม่แบบด้านล่างไปปรับใช้ในช่องทางออนไลน์ของธุรกิจทันทีเพื่อลดความเสี่ยงทางกฎหมาย';
+            document.getElementById('legal-ref-link').href = data.refUrl;
+
+            // Populate Template
+            document.getElementById('template-title').textContent = data.templateTitle;
+            document.getElementById('template-body').textContent = data.templateText;
+            document.getElementById('copy-btn').textContent = '📋 คัดลอกข้อความ';
+
+            switchView('view-result');
+        }
+
+        function copyTemplateText() {
+            const text = document.getElementById('template-body').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copy-btn');
+                btn.textContent = '✅ คัดลอกเรียบร้อย!';
+                setTimeout(() => {
+                    btn.textContent = '📋 คัดลอกข้อความ';
+                }, 2500);
+            });
+        }
+
+        function toggleGlossary(show) {
+            const modal = document.getElementById('glossary-modal');
+            if (show) modal.classList.add('active');
+            else modal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
